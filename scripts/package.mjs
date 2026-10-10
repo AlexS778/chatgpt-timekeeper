@@ -15,7 +15,7 @@ for (const target of ['firefox', 'chromium']) {
   for (const file of ['time.js', 'settings.js']) await cp(new URL(`src/${file}`, root), new URL(`src/${file}`, destination));
   const browserManifest = structuredClone(manifest);
   if (target === 'firefox') browserManifest.browser_specific_settings = { gecko: {
-    id: 'chatgpt-timekeeper@extensions.local',
+    id: 'chatgpt-timekeeper@alexs778.github.io',
     strict_min_version: '140.0',
     data_collection_permissions: { required: ['personalCommunications', 'locationInfo'] }
   }, gecko_android: { strict_min_version: '142.0' } };

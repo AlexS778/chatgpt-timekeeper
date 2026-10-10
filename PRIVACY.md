@@ -1,6 +1,6 @@
 # ChatGPT Timekeeper privacy policy
 
-Updated October 10, 2026. Developer: AlexS778.
+Updated October 11, 2026. Developer: AlexS778.
 
 ## Drafts and timestamps
 
@@ -18,7 +18,7 @@ The extension makes no network requests, sends no data to its developer, and has
 
 ## Links and support
 
-Source and issue links open GitHub only when you activate them. GitHub's own privacy practices then apply. Privacy questions can be raised through [GitHub Issues](https://github.com/AlexS778/chatgpt-timekeeper/issues); please do not post private chat text or credentials.
+Source and issue links open GitHub only when you activate them. GitHub's own privacy practices then apply. For support or privacy questions, email [probe-mumble7g@icloud.com](mailto:probe-mumble7g@icloud.com) or use [GitHub Issues](https://github.com/AlexS778/chatgpt-timekeeper/issues). Please do not include private chat text or credentials; public issues are visible to everyone.
 
 ## Policy changes
 

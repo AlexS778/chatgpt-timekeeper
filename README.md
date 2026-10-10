@@ -66,7 +66,7 @@ The unsigned Chromium and Firefox ZIPs contain the extension files with `manifes
 - **Production acceptance is incomplete.** Real-site IME, attachment-only, long-draft, failure/retry and undo checks remain pending across the claimed browsers; fixture coverage does not establish real-site acceptance.
 - **ChatGPT page changes can break stamping.** Unknown rich structures, ambiguous composers and unrecognized/localized Send labels are skipped. The native editing API is deprecated and browser-dependent. A changed draft before continuation remains for manual review/send; there are no automatic retries.
 - **Compatibility evidence is dated 2026-10-10.** Chrome and Firefox versions and exact test scope are recorded below and in the feasibility log. Edge, Brave and Opera are untested. Safari packaging, mobile browsers and native apps are outside this preview. Firefox's generated minimum version is packaging metadata, not evidence that Firefox 140 was tested.
-- **No signed browser-store distribution.** Firefox temporary loading ends on restart; the provisional extension ID must be reviewed before signing/store submission. The device clock determines the timestamp and may be inaccurate.
+- **No signed browser-store distribution.** Firefox temporary loading ends on restart; the selected permanent extension ID still requires AMO registration. The device clock determines the timestamp and may be inaccurate.
 
 ## Install for Firefox testing
 

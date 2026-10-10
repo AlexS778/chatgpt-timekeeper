@@ -1,6 +1,6 @@
 # Store metadata
 
-Last updated: 2026-10-10. **Draft, not submitted.** Current candidate: extension version `0.1.1`, intended future GitHub preview `v0.1.1-preview.1`. The published `v0.1.0-preview.2` remains unchanged.
+Last updated: 2026-10-11. **Draft, not submitted.** Firefox submission preparation is authorized; Chrome is deferred by the publisher because of its registration fee. Current candidate: extension version `0.1.1`, intended future GitHub preview `v0.1.1-preview.1` (not created). The published `v0.1.0-preview.2` remains unchanged.
 
 ## Listing
 
@@ -15,10 +15,13 @@ Open the popup to preview your browser's time or turn automatic timestamps off. 
 
 This is an early desktop Chrome and Firefox preview. Ordinary text sending has been tested, but compatibility can change when ChatGPT changes its interface. Sending during active dictation is unsupported: stop dictation before sending. Safari, mobile browsers and native apps are outside this preview.
 
+IME input, attachment-only sends, long drafts and failure/undo behavior still need further live-site testing. Unsupported editor layouts may send without a timestamp. Check the visible message after sending.
+
 The extension saves only its on/off preference locally. It handles your current draft temporarily, keeps no prompt history and sends no data to its developer. There is no analytics or advertising.
 
 Independent project; not affiliated with or endorsed by OpenAI.
 Source and support: https://github.com/AlexS778/chatgpt-timekeeper
+Support email: probe-mumble7g@icloud.com
 ```
 
 Use the same limitations in both stores. Do not describe the preview as guaranteed compatible or approved by OpenAI. The original clock artwork is ours, MIT licensed, and uses no OpenAI, Chrome or Firefox logos.
@@ -27,7 +30,7 @@ Use the same limitations in both stores. Do not describe the preview as guarante
 
 Policy: [PRIVACY.md](PRIVACY.md), with matching offline [privacy.html](privacy.html).
 
-Intended public policy URL after merge/publication: `https://github.com/AlexS778/chatgpt-timekeeper/blob/main/PRIVACY.md`. **Verify it is publicly reachable before submission.** It is not live merely because it exists locally.
+Public policy URL: `https://github.com/AlexS778/chatgpt-timekeeper/blob/main/PRIVACY.md`. An unauthenticated request returned HTTP 200 with the policy title and GMT-offset disclosure on 2026-10-11. Recheck after publishing this candidate's contact update.
 
 | Data | Access/use | Storage or transmission |
 | --- | --- | --- |
@@ -62,7 +65,13 @@ Generated Firefox manifest uses `required: ["personalCommunications", "locationI
 
 Desktop minimum `140.0` and Android schema minimum `142.0` support built-in consent declarations. These numbers are not tested compatibility claims. **Select desktop-only distribution; do not advertise Android support.** Actual installed-browser evidence remains Firefox 157.0.1 and Chrome 153.0.8010.36. The previous preview's `none` declaration must not be reused for this candidate. Confirm categorization with AMO review; do not weaken disclosures just to remove a prompt.
 
-The provisional ID `chatgpt-timekeeper@extensions.local` is stable within preview packages, but must be confirmed/finalized before the first signed submission. Once signed, preserve the registered ID on updates.
+The publisher selected permanent ID `chatgpt-timekeeper@alexs778.github.io` on 2026-10-11, replacing the unsigned preview's provisional `chatgpt-timekeeper@extensions.local`. It is an identifier, not a support mailbox. AMO availability/registration is still unverified. Once signed, preserve the registered ID on updates.
+
+Support email: `probe-mumble7g@icloud.com` (publisher supplied, monitored). Support website: `https://github.com/AlexS778/chatgpt-timekeeper/issues`. Homepage: `https://github.com/AlexS778/chatgpt-timekeeper`. License: MIT. Mark **experimental** and select **desktop Firefox only**, all desktop operating systems; exclude Android.
+
+Listing screenshot: `docs/images/store/timekeeper-screenshot.png` (1280×800), composed from the two unchanged real Firefox captures. Caption: “A real ChatGPT message with a local timestamp, alongside the Timekeeper on/off popup. Desktop preview, version 0.1.1.” See `docs/images/store/README.md` for provenance. The small Chrome promo tile is prepared but Chrome submission is deferred.
+
+Account access: signed-in Developer Hub observed on 2026-10-11 with “Submit Your First Add-on”; entering submission requires Mozilla account confirmation/two-step authentication setup. The publisher must complete credential setup privately. No agreement accepted by the agent and no package uploaded.
 
 ### Reviewer notes
 
@@ -76,7 +85,7 @@ The add-on changes text in the ordinary ChatGPT composer. It does not use privat
 
 Signed-out access was validated only in Chrome; do not assume it suffices for Firefox review. **Before submission**, provide any required disposable test-account credentials privately through AMO's reviewer notes, never in this file. No personal credentials are included here.
 
-Source build: Node 22+ and Python 3.9+. Supply a ZIP of the reviewed Git commit as described in `docs/RELEASING.md`. `npm ci`, `npm run check:build`, `npm run package`, `npm run verify:package`, `npm run lint:firefox`, and `npm run release` reproduce the packages. `scripts/build.mjs` concatenates the reviewable `src/` modules into `content.js`, without minification or obfuscation. PNGs are checked-in original artwork; `python3 scripts/icons.py` explains their construction and is not required for the package build. No external downloads at extension runtime.
+Source build: Node 22+ and Python 3.9+; local validation used Node 22.21.1, npm 10.9.4 and Python 3.11.5 on macOS. Supply a ZIP of the reviewed Git commit as described in `docs/RELEASING.md`. After extracting the source, `npm run check:build`, `npm run package`, `npm run verify:package`, and `npm run release` reproduce the Firefox package without installing dependencies. Compare `dist/release/chatgpt-timekeeper-v0.1.1-preview.1-firefox.zip` with the uploaded ZIP. For automated tests/lint only, run `npm ci`, `npm test`, `npm run lint:firefox`, and the browser commands in README. `scripts/build.mjs` concatenates the reviewable `src/` modules into `content.js`, without minification or obfuscation. PNG icons are checked-in original artwork; `python3 scripts/icons.py` explains their construction and is not required for the package build. Listing graphics and their development-only renderer are excluded from browser ZIPs. No external downloads at extension runtime.
 
 ### Release notes
 
@@ -90,10 +99,11 @@ Candidate 0.1.1 adds a readable date/time and GMT offset, original clock icons, 
 - [x] Mozilla Add-ons Linter added to local checks and CI; warnings fail validation.
 - [ ] Complete remaining real-site acceptance checks in TODO.md, then test the exact final installed packages, including the revised Firefox installation consent.
 - [ ] Finalize Firefox ID, desktop-only platform selection, store accounts and publisher details; provide a monitored contact email. The GitHub noreply commit address is not a support email.
-- [ ] Prepare store-size versions of the captured real-site README screenshots, the Chrome small promo tile and final icon review. Do not present fixture screenshots as real ChatGPT use.
+- [x] Prepare store-size composition of the captured real-site README screenshots, the Chrome small promo tile and final icon review. Captures remain unchanged; no fixtures or invented UI are presented as real ChatGPT use.
 - [ ] Publish source/policy, verify URLs, package source ZIP and final browser ZIPs, verify lockfile installation, artifact bytes and hosted CI for the exact submission commit.
 - [ ] Match Chrome dashboard declarations to the handling table and Firefox declaration; confirm any reviewer categorization questions.
-- [ ] Obtain store-submission authorization, submit and record signing/review outcomes. Local validation is not store approval.
+- [x] Obtain Firefox submission authorization from the publisher; Chrome is deferred.
+- [ ] Complete account/legal gates, submit Firefox and record signing/review outcomes. Local validation is not store approval.
 
 ## Version history
 

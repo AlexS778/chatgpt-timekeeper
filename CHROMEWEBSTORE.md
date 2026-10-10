@@ -1,6 +1,6 @@
 # Chrome Web Store listing — ChatGPT Timekeeper
 
-Last updated: 2026-10-10. **Draft, not submitted.** Version: 0.1.1.
+Last updated: 2026-10-11. **Deferred by publisher; not submitted.** Version: 0.1.1. The dashboard's first-registration page requires the Developer Agreement and a $5 fee. The publisher chose Firefox-only preparation for now; no agreement accepted or fee paid by the agent.
 
 ## Store listing
 
@@ -20,8 +20,8 @@ Last updated: 2026-10-10. **Draft, not submitted.** Version: 0.1.1.
 | --- | --- | --- | --- |
 | Extension/store icon | 128×128 PNG | Created; original clock with transparent padding | `icons/icon-128.png` |
 | Browser icons | 16/32/48 PNG | Created | `icons/icon-16.png`, `icon-32.png`, `icon-48.png` |
-| Screenshot | 1280×800 preferred; 640×400 also documented | Actual README demo captured; store-size asset still pending | `docs/images/timekeeper-in-action.png` (860×280) |
-| Small promo tile | 440×280 PNG/JPEG | Pending; **required**, despite installed template marking it recommended | — |
+| Screenshot | 1280×800 PNG | Prepared composition of unchanged actual Firefox captures; visually inspected | `docs/images/store/timekeeper-screenshot.png` |
+| Small promo tile | 440×280 PNG | Prepared original clock branding; **required** | `docs/images/store/timekeeper-promo.png` |
 | Marquee promo tile | 1400×560 PNG/JPEG | Optional; not created | — |
 
 Show a harmless sent prompt with the visible timestamp plus the current popup; omit account identifiers and private conversations. Fixture screenshots are only test evidence. Final assets must reflect the submission version. [Official graphics requirements](https://developer.chrome.com/docs/webstore/images) take precedence over the skill template.
@@ -47,7 +47,7 @@ Do not declare that no user data is handled merely because no developer server o
 
 **Privacy policy:** [PRIVACY.md](PRIVACY.md); offline copy in `privacy.html`.
 
-**Intended public URL:** `https://github.com/AlexS778/chatgpt-timekeeper/blob/main/PRIVACY.md`. Publish the policy and verify the URL before submission.
+**Public URL:** `https://github.com/AlexS778/chatgpt-timekeeper/blob/main/PRIVACY.md`. Unauthenticated HTTP 200 and current policy content verified on 2026-10-11; recheck after publishing the contact update.
 
 ## Distribution and developer info
 
@@ -55,7 +55,7 @@ Proposed visibility: public. Regions: confirm in the dashboard. No automatic sub
 
 Publisher account/name: **pending confirmation**. Public GitHub owner: AlexS778.
 
-Contact email: **pending monitored address**; do not use the GitHub noreply author address.
+Contact email: `probe-mumble7g@icloud.com` (publisher supplied, monitored).
 
 Support: `https://github.com/AlexS778/chatgpt-timekeeper/issues`.
 
