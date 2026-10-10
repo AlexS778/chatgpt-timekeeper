@@ -11,4 +11,5 @@
 - [ ] Review Firefox extension ID and complete signing/store requirements before regular distribution. Safari and additional browsers require their own validation.
 
 - [x] Prepare local 0.1.1 store-readiness improvements: icons, homepage and popup links, offline privacy policy, conservative Firefox transmission disclosures, listing/reviewer notes, and Mozilla package validation in CI.
+- [x] Make timestamps readable with a GMT offset, preserve legacy-prefix refresh, and put clear explanations and real screenshots first in README. See [validation and image provenance](docs/READABLE_TIMESTAMPS.md).
 - [ ] Complete the submission checklist in [STORE.md](STORE.md): final Firefox ID, publisher/contact details, current real-site screenshots and Chrome promo tile, source archive and store-account setup. No store submission is authorized or performed.

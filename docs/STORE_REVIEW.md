@@ -1,6 +1,6 @@
 # Local store-readiness review
 
-Prepared 2026-10-10 on `store-readiness` for the **unreleased** 0.1.1 candidate. No new tag, release, store submission or signed XPI was created. The published 0.1.0 preview and its tags/assets are unchanged.
+Historical review of commit `7ab001e`, prepared 2026-10-10 on `store-readiness` for the **unreleased** 0.1.1 candidate. No new tag, release, store submission or signed XPI was created. Later readable-timestamp and README work is recorded in [READABLE_TIMESTAMPS.md](READABLE_TIMESTAMPS.md). The published 0.1.0 preview and its tags/assets are unchanged.
 
 Applied the installed Chrome Extensions, modern web guidance accessibility, and cross-browser extension skills. Their framework-specific suggestions were adapted to the existing dependency-free runtime. Current official Chrome/Mozilla policies were checked; in particular, Chrome's small promo tile is required even though the installed template calls it recommended, and Mozilla's broad transmission definition prompted conservative chat-text/time-zone disclosures instead of `none`.
 

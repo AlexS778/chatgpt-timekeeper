@@ -1,11 +1,56 @@
 # ChatGPT Timekeeper
 
-A small, local WebExtension that adds your browser's date, time, UTC offset, and time zone to text you send on **chatgpt.com**:
+**Give ChatGPT a little context about when you're writing.**
+
+Timekeeper adds your local date and time to each message you send on [chatgpt.com](https://chatgpt.com). Handy for planning your day, keeping a journal, or talking about “today” and “tomorrow”.
+
+![ChatGPT Timekeeper adding a readable local timestamp to a message](docs/images/timekeeper-in-action.png)
+
+## What it does
+
+Write your message and send it as usual. Timekeeper adds one line at the top:
 
 ```text
-[Local time: 2026-10-10T20:02:00+03:00 | Europe/Moscow]
-Can you help me plan tomorrow?
+[Local time: 2026-10-10 23:38:30 GMT+3]
+Help me plan tomorrow morning.
 ```
+
+The time comes from your computer. The GMT offset tells ChatGPT which local time you're using. You can turn timestamps off at any time from the extension popup.
+
+![Timekeeper popup with the on/off switch and time preview](docs/images/timekeeper-popup.png)
+
+No account with us, no ads, no analytics. Your message and timestamp go to ChatGPT when you send; the extension keeps no chat history. [Privacy policy](PRIVACY.md).
+
+## Try it
+
+This is an early preview for desktop **Chrome and Firefox**. It isn't in the extension stores yet.
+
+To try the current source, download or clone this revision, install [Node.js](https://nodejs.org/) 22 or later, then run this in the project folder:
+
+```sh
+npm run package
+```
+
+**Chrome:** open `chrome://extensions`, turn on Developer mode, choose **Load unpacked**, and select `dist/chromium`.
+
+**Firefox:** open `about:debugging#/runtime/this-firefox`, choose **Load Temporary Add-on…**, and select `dist/firefox/manifest.json`. You'll need to load it again after restarting Firefox.
+
+Reload your ChatGPT tab, pin the extension if you like, and send a message. The popup shows a time preview and the on/off switch.
+
+You can also download the [published preview](https://github.com/AlexS778/chatgpt-timekeeper/releases/tag/v0.1.0-preview.2). That older version uses the longer timestamp format; the shorter format shown here is in the unreleased 0.1.1 source.
+
+**A couple of things to know:** stop dictation before sending. This preview works with ordinary text messages, and ChatGPT interface changes may affect it. Safari, mobile browsers and native apps aren't supported. More testing is still needed before a regular store release.
+
+[Report a problem](https://github.com/AlexS778/chatgpt-timekeeper/issues) · [Source](https://github.com/AlexS778/chatgpt-timekeeper) · [MIT license](LICENSE)
+
+Independent project; not affiliated with or endorsed by OpenAI.
+
+---
+
+<details>
+<summary><strong>Technical details, test evidence and release notes</strong></summary>
+
+The readable-format change passed 21 unit/source checks and 64 Firefox/Chromium fixtures. The screenshots above come from the installed Firefox extension and an actual temporary ChatGPT chat; [capture details and the limited real-site check](docs/READABLE_TIMESTAMPS.md) are recorded separately from the earlier compatibility matrix.
 
 **Development preview, tested in desktop Firefox and Chrome.** On 2026-10-10, the packaged extension passed real ChatGPT pointer Send-click, composer Enter, multiline Unicode/code, Shift+Enter and live off/on toggle checks in Firefox 157.0.1 (signed in) and Chrome 153.0.8010.36 (signed out and signed in). Signed-in Firefox and Chrome also passed new-chat navigation checks. The Chrome focused Send-button bug was subsequently fixed and verified with the installed extension in both browsers; the remaining acceptance matrix is pending. Test evidence is in [docs/FEASIBILITY.md](docs/FEASIBILITY.md). Safari and mobile are outside this preview. This is not a production compatibility guarantee.
 
@@ -31,7 +76,7 @@ The unsigned Chromium and Firefox ZIPs contain the extension files with `manifes
 4. Reload the ChatGPT test tab. Open the extension popup to check the toggle.
 5. Use a fresh temporary chat and the harmless prompts in [docs/MANUAL_TESTS.md](docs/MANUAL_TESTS.md).
 
-Temporary add-ons disappear when Firefox restarts. Regular distribution requires Mozilla signing; this project does not contain a signed XPI. Firefox packaging adds an extension ID and required data disclosures for chat text (`personalCommunications`) and the time zone's configured region (`locationInfo`). The extension sends through ChatGPT's normal flow and has no developer collection; see [the privacy policy](PRIVACY.md). Desktop Firefox 140 and Android 142 are the consent-schema minimums, not a claim of tested compatibility; Android distribution remains out of scope. See [Mozilla's manifest documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings). The ID must be checked for availability before a store submission.
+Temporary add-ons disappear when Firefox restarts. Regular distribution requires Mozilla signing; this project does not contain a signed XPI. Firefox packaging adds an extension ID and required data disclosures for chat text (`personalCommunications`) and the broad time-zone information suggested by the GMT offset (`locationInfo`). The extension sends through ChatGPT's normal flow and has no developer collection; see [the privacy policy](PRIVACY.md). Desktop Firefox 140 and Android 142 are the consent-schema minimums, not a claim of tested compatibility; Android distribution remains out of scope. See [Mozilla's manifest documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings). The ID must be checked for availability before a store submission.
 
 ## Install for Chrome testing
 
@@ -45,7 +90,7 @@ This package is for local development testing. Chrome 153.0.8010.36 passed point
 
 ## Behavior and privacy
 
-The popup has one persisted on/off setting (on by default) and a clock preview taken when it opens, plus version, source, issue-report and offline privacy links. Changes apply to open tabs. When enabled, the extension stamps ordinary Send-button clicks and Enter-to-send. Shift+Enter, IME composition, modified Enter, empty drafts, attachments without text, and unrelated controls do not trigger stamping. A retry refreshes only an exact prefix at the start; timestamp-like text elsewhere is preserved.
+The popup has one persisted on/off setting (on by default) and a clock preview taken when it opens, plus version, source, issue-report and offline privacy links. Changes apply to open tabs. When enabled, the extension stamps ordinary Send-button clicks and Enter-to-send. Shift+Enter, IME composition, modified Enter, empty drafts, attachments without text, and unrelated controls do not trigger stamping. A retry refreshes only an exact prefix at the start; timestamp-like text elsewhere is preserved. Both the readable GMT format and the older ISO-style preview prefix are recognized, so upgrading does not stack two stamps. The IANA time-zone name stays in the popup; it is no longer included in sent messages.
 
 **Dictation limitation:** Sending while dictation is still active does not add a timestamp, according to the user's Firefox test on 2026-10-10. **Stop dictation → Send** works once the transcription enters the ordinary composer. Support for the active-dictation send path is tracked in [TODO.md](TODO.md).
 
@@ -87,3 +132,5 @@ CFFIXED_USER_HOME=/private/tmp/timekeeper-firefox-home npm run test:browser
 GitHub Actions runs unit/source checks on Node 22 and 24, plus Chromium/Firefox fixtures, package verification, Mozilla validation with warnings treated as errors, and repeat-build archive checks on Ubuntu. Actions are pinned to reviewed commits and CI has read-only repository permissions; it uploads test packages but does not publish GitHub releases. Hosted CI checks are available in the repository’s [Actions page](https://github.com/AlexS778/chatgpt-timekeeper/actions). See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and privacy-safe bug reports.
 
 MIT licensed. No Safari wrapper or store publication is included.
+
+</details>

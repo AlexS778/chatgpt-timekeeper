@@ -7,8 +7,8 @@ const extension = globalThis.browser ?? globalThis.chrome;
 document.querySelector('#version').textContent = `Version ${extension.runtime.getManifest().version} · Preview`;
 const now = new Date();
 const zone = localTimeZone(now);
-document.querySelector('#clock').textContent = formatLocalTimestamp(now, zone)
-  .slice('[Local time: '.length).split(' | ')[0].replace('T', ' ');
+document.querySelector('#clock').textContent = formatLocalTimestamp(now)
+  .slice('[Local time: '.length, -1);
 document.querySelector('#zone').textContent = zone;
 function showError() {
   status.hidden = false;

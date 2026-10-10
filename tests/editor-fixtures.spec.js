@@ -110,7 +110,7 @@ for (const kind of ['textarea', 'guest-textarea', 'contenteditable']) {
     await expect.poll(() => sent(page)).toHaveLength(1);
     let messages = await sent(page);
     expect(messages).toHaveLength(1);
-    expect(messages[0]).toMatch(/^\[Local time: 2026-10-10T/);
+    expect(messages[0]).toMatch(/^\[Local time: 2026-10-10 \d{2}:\d{2}:\d{2} GMT[+-]\d{1,2}(?::\d{2})?\]\n/);
     expect(unstamped(messages[0])).toBe(draft);
     // A newline insertion emits multiple input events in Chromium. Count editing
     // commands and submitted messages, rather than assuming one event per command.

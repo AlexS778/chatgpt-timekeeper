@@ -20,7 +20,7 @@ Last updated: 2026-10-10. **Draft, not submitted.** Version: 0.1.1.
 | --- | --- | --- | --- |
 | Extension/store icon | 128×128 PNG | Created; original clock with transparent padding | `icons/icon-128.png` |
 | Browser icons | 16/32/48 PNG | Created | `icons/icon-16.png`, `icon-32.png`, `icon-48.png` |
-| Screenshot | 1280×800 preferred; 640×400 also documented | Pending real-site capture | — |
+| Screenshot | 1280×800 preferred; 640×400 also documented | Actual README demo captured; store-size asset still pending | `docs/images/timekeeper-in-action.png` (860×280) |
 | Small promo tile | 440×280 PNG/JPEG | Pending; **required**, despite installed template marking it recommended | — |
 | Marquee promo tile | 1400×560 PNG/JPEG | Optional; not created | — |
 
@@ -37,7 +37,7 @@ No separate `host_permissions`, background process, clipboard/history access or 
 
 ## Privacy and data use
 
-Use the handling table in [STORE.md](STORE.md#privacy-and-data-use) when completing the current dashboard. Disclose **personal communications / website content** for the temporary chat draft and **location** for the configured time-zone region included in sent messages. Explain that no GPS location is accessed. Interaction recognition is transient, without event collection or reporting. Other sensitive content may exist in a user-written prompt; it is neither extracted nor separately stored.
+Use the handling table in [STORE.md](STORE.md#privacy-and-data-use) when completing the current dashboard. Disclose **personal communications / website content** for the temporary chat draft and **location** for the broad time-zone information suggested by the GMT offset in sent messages. Explain that no GPS location is accessed. Interaction recognition is transient, without event collection or reporting. Other sensitive content may exist in a user-written prompt; it is neither extracted nor separately stored.
 
 Do not declare that no user data is handled merely because no developer server or extension network API is involved. The user's message and timestamp go to ChatGPT through its normal send flow, with no additional recipient. Final dashboard choices must be checked against the actual form and code before submission.
 
@@ -65,7 +65,7 @@ Homepage: `https://github.com/AlexS778/chatgpt-timekeeper`.
 
 | Version | Changes | Store status |
 | --- | --- | --- |
-| 0.1.1 | Icons, popup links/version, offline privacy, security restrictions and updated Firefox disclosures | Draft |
+| 0.1.1 | Readable timestamps, icons, popup links/version, offline privacy, security restrictions and updated Firefox disclosures | Draft |
 | 0.1.0 | Initial unsigned GitHub preview | Never submitted |
 
 ## Review notes

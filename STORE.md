@@ -9,7 +9,7 @@ Name: **ChatGPT Timekeeper**. Summary: **Adds your browser-local time to outgoin
 Suggested detailed description (plain text for dashboard forms):
 
 ```text
-Add your local date, time, UTC offset and time zone to text messages you send on chatgpt.com.
+Add your local date, time and GMT offset to text messages you send on chatgpt.com.
 
 Open the popup to preview your browser's time or turn automatic timestamps off. The timestamp becomes visible message text and goes to ChatGPT when you send. It uses your device clock, so an incorrect clock produces an incorrect timestamp.
 
@@ -32,7 +32,8 @@ Intended public policy URL after merge/publication: `https://github.com/AlexS778
 | Data | Access/use | Storage or transmission |
 | --- | --- | --- |
 | Current chat draft | Read/edit only for timestamp insertion and send verification | Temporary in-memory snapshots; no prompt history. Message goes to ChatGPT on the user's Send gesture through the site. |
-| Local date/time, UTC offset, time zone | Construct visible prefix and popup preview | Included in sent message. Zone can reveal configured region; no GPS lookup. |
+| Local date/time and GMT offset | Construct visible prefix and popup preview | Included in sent message. Offset can suggest a broad time-zone region; no GPS lookup. |
+| Time-zone name | Display in the popup | Local display only; no longer included in the message. |
 | Enabled preference | Apply user's choice | Local extension storage only; no extension-managed sync. |
 | Send/input interactions | Recognize ordinary sending and preserve draft behavior | Transient handling only; no event logs or analytics. |
 | Responses, cookies, authentication, browsing history | Not collected by the extension | No developer collection, retention or transmission. |
@@ -57,7 +58,7 @@ Full dashboard copy and graphics checklist: [CHROMEWEBSTORE.md](CHROMEWEBSTORE.m
 
 ### Data collection declaration
 
-Generated Firefox manifest uses `required: ["personalCommunications", "locationInfo"]`. This is a conservative interpretation of Mozilla's broad transmission definition: the extension facilitates sending a chat message containing a region-revealing time zone. It does **not** add developer collection or GPS access. Required categories are disclosed by Firefox before installation; users can cancel installation or stop stamping with the popup toggle.
+Generated Firefox manifest uses `required: ["personalCommunications", "locationInfo"]`. This is a conservative interpretation of Mozilla's broad transmission definition: the extension facilitates sending a chat message containing a GMT offset that can suggest a broad time-zone region. It does **not** add developer collection or GPS access. Required categories are disclosed by Firefox before installation; users can cancel installation or stop stamping with the popup toggle.
 
 Desktop minimum `140.0` and Android schema minimum `142.0` support built-in consent declarations. These numbers are not tested compatibility claims. **Select desktop-only distribution; do not advertise Android support.** Actual installed-browser evidence remains Firefox 157.0.1 and Chrome 153.0.8010.36. The previous preview's `none` declaration must not be reused for this candidate. Confirm categorization with AMO review; do not weaken disclosures just to remove a prompt.
 
@@ -79,7 +80,7 @@ Source build: Node 22+ and Python 3.9+. Supply a ZIP of the reviewed Git commit 
 
 ### Release notes
 
-Candidate 0.1.1 adds original clock icons, source/support/privacy links and version in the popup, offline privacy information, explicit extension-page security restrictions and updated Firefox transmission disclosures. Timestamp insertion and active-dictation support are unchanged.
+Candidate 0.1.1 adds a readable date/time and GMT offset, original clock icons, source/support/privacy links and version in the popup, offline privacy information, explicit extension-page security restrictions and updated Firefox transmission disclosures. The sending mechanism and active-dictation support are unchanged.
 
 ## Submission gate
 
@@ -89,7 +90,7 @@ Candidate 0.1.1 adds original clock icons, source/support/privacy links and vers
 - [x] Mozilla Add-ons Linter added to local checks and CI; warnings fail validation.
 - [ ] Complete remaining real-site acceptance checks in TODO.md, then test the exact final installed packages, including the revised Firefox installation consent.
 - [ ] Finalize Firefox ID, desktop-only platform selection, store accounts and publisher details; provide a monitored contact email. The GitHub noreply commit address is not a support email.
-- [ ] Capture current privacy-safe real-site screenshot(s), Chrome small promo tile and final icon review. Do not present fixture screenshots as real ChatGPT use.
+- [ ] Prepare store-size versions of the captured real-site README screenshots, the Chrome small promo tile and final icon review. Do not present fixture screenshots as real ChatGPT use.
 - [ ] Publish source/policy, verify URLs, package source ZIP and final browser ZIPs, verify lockfile installation, artifact bytes and hosted CI for the exact submission commit.
 - [ ] Match Chrome dashboard declarations to the handling table and Firefox declaration; confirm any reviewer categorization questions.
 - [ ] Obtain store-submission authorization, submit and record signing/review outcomes. Local validation is not store approval.

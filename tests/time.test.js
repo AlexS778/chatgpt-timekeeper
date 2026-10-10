@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { formatLocalTimestamp, localTimeZone } from '../src/time.js';
 
-function formatIn(zone, instant, label = zone) {
-  const source = `import { formatLocalTimestamp } from './src/time.js'; console.log(formatLocalTimestamp(new Date(${JSON.stringify(instant)}), ${JSON.stringify(label)}));`;
+function formatIn(zone, instant) {
+  const source = `import { formatLocalTimestamp } from './src/time.js'; console.log(formatLocalTimestamp(new Date(${JSON.stringify(instant)})));`;
   const result = spawnSync(process.execPath, ['--input-type=module', '-e', source], {
     cwd: new URL('../', import.meta.url), env: { ...process.env, TZ: zone }, encoding: 'utf8'
   });
@@ -13,28 +13,26 @@ function formatIn(zone, instant, label = zone) {
 }
 
 for (const [zone, instant, expected] of [
-  ['UTC', '2024-02-29T23:59:59Z', '2024-02-29T23:59:59+00:00 | UTC'],
-  ['Asia/Tokyo', '2025-12-31T23:59:59Z', '2026-01-01T08:59:59+09:00 | Asia/Tokyo'],
-  ['Asia/Kolkata', '2026-10-10T10:00:00Z', '2026-10-10T15:30:00+05:30 | Asia/Calcutta'],
-  ['America/St_Johns', '2026-01-01T00:00:00Z', '2025-12-31T20:30:00-03:30 | America/St_Johns'],
-  ['Asia/Kathmandu', '2026-10-10T00:00:00Z', '2026-10-10T05:45:00+05:45 | Asia/Katmandu'],
-  ['America/New_York', '2026-03-08T06:59:59Z', '2026-03-08T01:59:59-05:00 | America/New_York'],
-  ['America/New_York', '2026-03-08T07:00:00Z', '2026-03-08T03:00:00-04:00 | America/New_York'],
-  ['America/New_York', '2026-11-01T05:59:59Z', '2026-11-01T01:59:59-04:00 | America/New_York'],
-  ['America/New_York', '2026-11-01T06:00:00Z', '2026-11-01T01:00:00-05:00 | America/New_York']
+  ['UTC', '2024-02-29T23:59:59Z', '2024-02-29 23:59:59 GMT+0'],
+  ['Asia/Tokyo', '2025-12-31T23:59:59Z', '2026-01-01 08:59:59 GMT+9'],
+  ['Asia/Kolkata', '2026-10-10T10:00:00Z', '2026-10-10 15:30:00 GMT+5:30'],
+  ['America/St_Johns', '2026-01-01T00:00:00Z', '2025-12-31 20:30:00 GMT-3:30'],
+  ['Asia/Kathmandu', '2026-10-10T00:00:00Z', '2026-10-10 05:45:00 GMT+5:45'],
+  ['America/New_York', '2026-03-08T06:59:59Z', '2026-03-08 01:59:59 GMT-5'],
+  ['America/New_York', '2026-03-08T07:00:00Z', '2026-03-08 03:00:00 GMT-4'],
+  ['America/New_York', '2026-11-01T05:59:59Z', '2026-11-01 01:59:59 GMT-4'],
+  ['America/New_York', '2026-11-01T06:00:00Z', '2026-11-01 01:00:00 GMT-5']
 ]) {
   test(`${zone}: ${instant}`, () => {
-    // ICU canonical aliases can change; assert the calendar/offset independently.
     const value = formatIn(zone, instant);
-    assert.equal(value.split(' | ')[0], `[Local time: ${expected.split(' | ')[0]}`);
-    assert.ok(value.endsWith(']'));
+    assert.equal(value, `[Local time: ${expected}]`);
   });
 }
 
 test('invalid zone falls back to offset; invalid date is rejected', () => {
-  assert.equal(formatIn('Asia/Kolkata', '2026-10-10T00:00:00Z', 'invalid|zone'),
-    '[Local time: 2026-10-10T05:30:00+05:30 | UTC+05:30]');
-  assert.equal(formatIn('UTC', '2026-10-10T00:00:00Z', ''), '[Local time: 2026-10-10T00:00:00+00:00 | UTC]');
+  const now = new Date('2026-10-10T00:00:00Z');
+  assert.match(localTimeZone(now, 'invalid|zone'), /^(UTC|UTC[+-]\d{2}:\d{2})$/);
+  assert.match(localTimeZone(now, ''), /^(UTC|UTC[+-]\d{2}:\d{2})$/);
   assert.throws(() => formatLocalTimestamp(new Date(NaN)), TypeError);
   assert.ok(localTimeZone(new Date()));
 });

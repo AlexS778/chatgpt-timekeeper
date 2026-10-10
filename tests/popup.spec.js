@@ -26,7 +26,7 @@ test('popup previews time and saves only enabled; toggle is keyboard accessible'
   const toggle = page.getByRole('switch');
   await expect(toggle).toBeChecked(); await expect(toggle).toBeEnabled();
   await expect(page.locator('#version')).toHaveText(`Version ${manifest.version} · Preview`);
-  await expect(page.locator('#clock')).toHaveText(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
+  await expect(page.locator('#clock')).toHaveText(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} GMT[+-]\d{1,2}(?::\d{2})?/);
   await toggle.focus(); await toggle.press('Space');
   await expect(toggle).not.toBeChecked();
   expect(await page.evaluate(() => stored)).toEqual({ enabled: false });

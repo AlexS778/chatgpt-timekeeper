@@ -4,9 +4,9 @@ Updated October 10, 2026. Developer: AlexS778.
 
 ## Drafts and timestamps
 
-The extension reads and edits the current text draft on chatgpt.com to add your device's date, time, UTC offset and time-zone name. Draft text is handled temporarily in memory; the extension does not save prompts, responses or chat history.
+The extension reads and edits the current text draft on chatgpt.com to add your device's date, time and GMT offset. Draft text is handled temporarily in memory; the extension does not save prompts, responses or chat history.
 
-When you choose Send, the timestamp and your message are sent to ChatGPT through the website's normal submission. The time zone can reveal your configured region, but is not a GPS location. Your device clock may be inaccurate. ChatGPT's own data handling applies to messages you send.
+When you choose Send, the timestamp and your message are sent to ChatGPT through the website's normal submission. The GMT offset can suggest a broad time-zone region, but is not a GPS location. Your device clock may be inaccurate. ChatGPT's own data handling applies to messages you send.
 
 ## Local settings and control
 
