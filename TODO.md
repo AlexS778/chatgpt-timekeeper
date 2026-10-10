@@ -7,5 +7,8 @@
 - [ ] Complete real-site Chrome IME, attachment-only and failure/undo acceptance checks. Package: `dist/chromium/`.
 - [ ] Complete the remaining real-site Firefox acceptance matrix and long-draft checks in both browsers; record failures/skips before making a production-readiness claim.
 - [x] Prepare first open-source preview locally: Git on `main`, CI, publication review, contributor/release documentation, verified unsigned ZIPs/checksums and annotated `v0.1.0-preview.2` tag. See [publication review](docs/PUBLICATION_REVIEW.md).
-- [ ] Obtain the GitHub destination, publish reviewed source/tag, wait for hosted CI, then create a GitHub **prerelease** with the prepared notes and assets. No destination or remote is assumed.
+- [x] Publish reviewed source/tag to the approved public destination `AlexS778/chatgpt-timekeeper`, verify hosted CI and matching artifact checksums, and publish GitHub prerelease `v0.1.0-preview.2`.
 - [ ] Review Firefox extension ID and complete signing/store requirements before regular distribution. Safari and additional browsers require their own validation.
+
+- [x] Prepare local 0.1.1 store-readiness improvements: icons, homepage and popup links, offline privacy policy, conservative Firefox transmission disclosures, listing/reviewer notes, and Mozilla package validation in CI.
+- [ ] Complete the submission checklist in [STORE.md](STORE.md): final Firefox ID, publisher/contact details, current real-site screenshots and Chrome promo tile, source archive and store-account setup. No store submission is authorized or performed.

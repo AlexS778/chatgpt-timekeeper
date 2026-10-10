@@ -1,5 +1,7 @@
 # First preview publication review
 
+Historical review of 0.1.0: preview `.2` was subsequently published after [tagged CI](https://github.com/AlexS778/chatgpt-timekeeper/actions/runs/38083648815) passed and hosted/local artifact checksums matched. Current unreleased 0.1.1 work is recorded separately in [STORE_REVIEW.md](STORE_REVIEW.md).
+
 Prepared on **2026-10-10** for annotated tag **`v0.1.0-preview.2`**, extension/package version **`0.1.0`**. This review supports an open-source development preview. The production acceptance gate in `SYSTEM_DESIGN.md` remains incomplete.
 
 ## Reviewed scope

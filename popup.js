@@ -3,6 +3,8 @@ import { createSettings } from './src/settings.js';
 
 const toggle = document.querySelector('#enabled');
 const status = document.querySelector('#status');
+const extension = globalThis.browser ?? globalThis.chrome;
+document.querySelector('#version').textContent = `Version ${extension.runtime.getManifest().version} · Preview`;
 const now = new Date();
 const zone = localTimeZone(now);
 document.querySelector('#clock').textContent = formatLocalTimestamp(now, zone)

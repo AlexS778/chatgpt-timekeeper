@@ -10,9 +10,12 @@ ROOT = Path(__file__).resolve().parent.parent
 VERSION = json.loads((ROOT / 'package.json').read_text())['version']
 if not re.fullmatch(r'\d+\.\d+\.\d+', VERSION):
     raise ValueError('Expected a numeric WebExtension version')
-TAG = f'v{VERSION}-preview.2'
+TAG = json.loads((ROOT / 'package.json').read_text())['previewTag']
+if not re.fullmatch(rf'v{re.escape(VERSION)}-preview\.[1-9]\d*', TAG):
+    raise ValueError('previewTag must match the numeric package version')
 FILES = sorted(['LICENSE', 'content.js', 'manifest.json', 'popup.css', 'popup.html',
-                'popup.js', 'src/settings.js', 'src/time.js'])
+                'popup.js', 'privacy.html', 'src/settings.js', 'src/time.js',
+                *[f'icons/icon-{size}.png' for size in [16, 32, 48, 128]]])
 OUTPUT = ROOT / 'dist' / 'release'
 if OUTPUT.exists():
     shutil.rmtree(OUTPUT)

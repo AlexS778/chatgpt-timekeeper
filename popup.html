@@ -10,13 +10,22 @@
   <body>
     <main>
       <h1>ChatGPT Timekeeper</h1>
-      <label class="toggle"><span>Automatically add time</span><input id="enabled" type="checkbox" role="switch" disabled></label>
+      <label class="toggle" for="enabled"><span>Automatically add time</span><input id="enabled" type="checkbox" role="switch" aria-describedby="message-disclosure" disabled></label>
       <p class="caption">Browser time:</p>
       <p id="clock"></p>
       <p id="zone"></p>
       <p class="caption">Only runs on chatgpt.com</p>
-      <p class="privacy">The timestamp is visible in your message and sent to ChatGPT when you send.</p>
+      <p class="privacy" id="message-disclosure">The timestamp, including your time zone, is visible in your message and sent to ChatGPT when you send.</p>
       <p id="status" role="status" hidden></p>
+      <footer>
+        <p id="version"></p>
+        <nav aria-label="Project">
+          <a href="https://github.com/AlexS778/chatgpt-timekeeper" target="_blank" rel="noopener noreferrer">Source</a>
+          <a href="https://github.com/AlexS778/chatgpt-timekeeper/issues" target="_blank" rel="noopener noreferrer">Report an issue</a>
+          <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy</a>
+        </nav>
+        <p class="privacy">Independent project; not affiliated with OpenAI.</p>
+      </footer>
     </main>
   </body>
 </html>

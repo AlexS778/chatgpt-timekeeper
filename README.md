@@ -11,9 +11,9 @@ Can you help me plan tomorrow?
 
 ## Preview release
 
-The public preview candidate is tagged **`v0.1.0-preview.2`**; the WebExtension manifest and package version remain **`0.1.0`** because extension versions use numeric components. Release notes: [docs/releases/v0.1.0-preview.2.md](docs/releases/v0.1.0-preview.2.md). This project is independent and is not affiliated with or endorsed by OpenAI.
+The published preview is tagged **`v0.1.0-preview.2`**; its WebExtension manifest and package use numeric version **`0.1.0`**. Release notes: [docs/releases/v0.1.0-preview.2.md](docs/releases/v0.1.0-preview.2.md). This project is independent and is not affiliated with or endorsed by OpenAI.
 
-The unsigned Chromium and Firefox ZIPs contain the extension files with `manifest.json` at the archive root. Extract the matching ZIP into its own directory, then load that directory using the browser instructions below (Firefox selects its `manifest.json`). They are local testing packages, not signed store installs. To build them yourself, run `npm run release` with Node 22+ and Python 3.9+; output and SHA-256 checksums are in `dist/release/`. [Release preparation](docs/RELEASING.md) explains verification and publication.
+The unsigned Chromium and Firefox ZIPs contain the extension files with `manifest.json` at the archive root. Extract the matching ZIP into its own directory, then load that directory using the browser instructions below (Firefox selects its `manifest.json`). They are local testing packages, not signed store installs. The current source prepares the **unreleased 0.1.1** store-readiness candidate (`v0.1.1-preview.1`); the published 0.1.0 ZIPs are unchanged. To reproduce the published assets, check out `v0.1.0-preview.2` first. To build the current candidate, run `npm run release` with Node 22+ and Python 3.9+; output and SHA-256 checksums are in `dist/release/`. [Release preparation](docs/RELEASING.md) explains verification and publication.
 
 ### Known limitations
 
@@ -31,7 +31,7 @@ The unsigned Chromium and Firefox ZIPs contain the extension files with `manifes
 4. Reload the ChatGPT test tab. Open the extension popup to check the toggle.
 5. Use a fresh temporary chat and the harmless prompts in [docs/MANUAL_TESTS.md](docs/MANUAL_TESTS.md).
 
-Temporary add-ons disappear when Firefox restarts. Regular distribution requires Mozilla signing; this project does not contain a signed XPI. Firefox packaging adds an extension ID and a declaration that the extension collects no data. See [Mozilla's manifest documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings). The ID must be checked for availability before a store submission.
+Temporary add-ons disappear when Firefox restarts. Regular distribution requires Mozilla signing; this project does not contain a signed XPI. Firefox packaging adds an extension ID and required data disclosures for chat text (`personalCommunications`) and the time zone's configured region (`locationInfo`). The extension sends through ChatGPT's normal flow and has no developer collection; see [the privacy policy](PRIVACY.md). Desktop Firefox 140 and Android 142 are the consent-schema minimums, not a claim of tested compatibility; Android distribution remains out of scope. See [Mozilla's manifest documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings). The ID must be checked for availability before a store submission.
 
 ## Install for Chrome testing
 
@@ -45,13 +45,15 @@ This package is for local development testing. Chrome 153.0.8010.36 passed point
 
 ## Behavior and privacy
 
-The popup has one persisted on/off setting (on by default) and a clock preview taken when it opens. Changes apply to open tabs. When enabled, the extension stamps ordinary Send-button clicks and Enter-to-send. Shift+Enter, IME composition, modified Enter, empty drafts, attachments without text, and unrelated controls do not trigger stamping. A retry refreshes only an exact prefix at the start; timestamp-like text elsewhere is preserved.
+The popup has one persisted on/off setting (on by default) and a clock preview taken when it opens, plus version, source, issue-report and offline privacy links. Changes apply to open tabs. When enabled, the extension stamps ordinary Send-button clicks and Enter-to-send. Shift+Enter, IME composition, modified Enter, empty drafts, attachments without text, and unrelated controls do not trigger stamping. A retry refreshes only an exact prefix at the start; timestamp-like text elsewhere is preserved.
 
 **Dictation limitation:** Sending while dictation is still active does not add a timestamp, according to the user's Firefox test on 2026-10-10. **Stop dictation → Send** works once the transcription enters the ordinary composer. Support for the active-dictation send path is tracked in [TODO.md](TODO.md).
 
 **Focused Send-button fix:** Tab → Send → Space/Enter and accessibility Send activation now continue once in the next event-loop task. This avoids Chromium suppressing a simulated click while the original activation is still in progress. The installed signed-in Chrome extension passed these paths on 2026-10-10; Firefox focused Space, pointer click and composer Enter also passed. See [the regression and real-browser evidence](docs/FEASIBILITY.md#2026-10-10--focused-send-button-fix).
 
 **The timestamp is visible in the message and is sent to ChatGPT through the site's usual send flow.** The extension makes no network requests and saves only `enabled` in local extension storage. It has only the `storage` permission and a declarative content script limited to `https://chatgpt.com/*`. There is no background worker, analytics, prompt storage, clipboard access, history reader, or remote dependency.
+
+The [privacy policy](PRIVACY.md) explains temporary draft handling, local preferences, user-directed ChatGPT submission, and support links. [STORE.md](STORE.md) and [CHROMEWEBSTORE.md](CHROMEWEBSTORE.md) contain draft listing copy, disclosure justifications, reviewer steps and remaining submission requirements. Store readiness is work in progress; no store submission has been made.
 
 **Current sending integration (2026-10-10):** The extension uses ChatGPT's HTML/DOM controls as its integration surface for sending messages. It identifies the composer and related Send button by CSS selectors and element attributes, inserts the timestamp through the browser's native editing pathway, then invokes the normal Send button once so ChatGPT's own JavaScript handles submission. It does not call or reverse-engineer ChatGPT's private backend API. These page controls are not a documented, stable public API: changes to their markup, labels, or editor behavior can break compatibility. Unrecognized controls are skipped, and compatibility requires testing against the current ChatGPT page and browser; there is no permanent compatibility guarantee. See [the dated observations and validation status](docs/FEASIBILITY.md).
 
@@ -67,9 +69,11 @@ npm test
 npx playwright install firefox chromium
 npm run test:browser
 npm run package
+npm run verify:package
+npm run lint:firefox
 ```
 
-Runtime code has no dependencies. Playwright and ProseMirror are pinned development dependencies and are excluded from shipping packages. Unit tests cover calendar boundaries, leap day, fractional offsets, DST, exact prefix handling, settings, and privacy invariants. Firefox and Chromium fixture projects exercise a real ProseMirror model/history stack and controlled textarea models, including the signed-out controls; they are not substitutes for real ChatGPT extension tests. Run one engine with `npm run test:browser -- --project=firefox` or `--project=chromium`.
+Runtime code has no dependencies. Playwright, ProseMirror and Mozilla Add-ons Linter are pinned development dependencies and are excluded from shipping packages. Unit tests cover calendar boundaries, leap day, fractional offsets, DST, exact prefix handling, settings, and privacy invariants. Firefox and Chromium fixture projects exercise a real ProseMirror model/history stack and controlled textarea models, including the signed-out controls; they are not substitutes for real ChatGPT extension tests. Run one engine with `npm run test:browser -- --project=firefox` or `--project=chromium`.
 
 On macOS 27, Playwright 1.64's Firefox can exit with `Could not find profile folder` because it tries to access the installed Firefox's protected app-data directory ([upstream report](https://github.com/microsoft/playwright/issues/42768)). To use separate disposable test app data:
 
@@ -78,8 +82,8 @@ mkdir -p /private/tmp/timekeeper-firefox-home
 CFFIXED_USER_HOME=/private/tmp/timekeeper-firefox-home npm run test:browser
 ```
 
-`src/` contains the reviewable modules. `npm run build` deterministically concatenates them into the checked-in isolated `content.js`; `npm run check:build` detects stale output. The popup uses local ES modules directly. Package directories contain only the shipping scripts, popup, manifest, and license; `npm run verify:package` checks their file list and source equality. `npm run package` replaces the generated `dist/chromium/` and `dist/firefox/` directories. `SYSTEM_DESIGN.md` remains the original specification, not a statement of completed acceptance.
+`src/` contains the reviewable modules. `npm run build` deterministically concatenates them into the checked-in isolated `content.js`; `npm run check:build` detects stale output. The popup uses local ES modules directly. Package directories contain only the shipping scripts, popup, offline privacy page, PNG icons, manifest, and license; `npm run verify:package` checks their file list and source equality. `npm run package` replaces the generated `dist/chromium/` and `dist/firefox/` directories. `SYSTEM_DESIGN.md` remains the original specification, not a statement of completed acceptance.
 
-GitHub Actions runs unit/source checks on Node 22 and 24, plus Chromium/Firefox fixtures, package verification and repeat-build archive checks on Ubuntu. Actions are pinned to reviewed commits and CI has read-only repository permissions; it uploads test packages but does not publish GitHub releases. Hosted CI checks are available in the repository’s [Actions page](https://github.com/AlexS778/chatgpt-timekeeper/actions). See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and privacy-safe bug reports.
+GitHub Actions runs unit/source checks on Node 22 and 24, plus Chromium/Firefox fixtures, package verification, Mozilla validation with warnings treated as errors, and repeat-build archive checks on Ubuntu. Actions are pinned to reviewed commits and CI has read-only repository permissions; it uploads test packages but does not publish GitHub releases. Hosted CI checks are available in the repository’s [Actions page](https://github.com/AlexS778/chatgpt-timekeeper/actions). See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and privacy-safe bug reports.
 
 MIT licensed. No Safari wrapper or store publication is included.

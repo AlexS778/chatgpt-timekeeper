@@ -49,6 +49,8 @@ jobs:
       - run: npm run check:build
       - run: npx playwright install --with-deps firefox chromium
       - run: npm run test:browser
+      - name: Validate Firefox package with Mozilla Add-ons Linter
+        run: npm run package && npm run verify:package && npm run lint:firefox
       - name: Package, verify archives and check reproducibility
         run: |
           npm run release

@@ -1,6 +1,6 @@
 {
   "name": "chatgpt-timekeeper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -14,13 +14,16 @@
     "test:browser": "npm run build && playwright test",
     "package": "npm run build && node scripts/package.mjs",
     "verify:package": "node scripts/verify-package.mjs",
-    "release": "npm run package && npm run verify:package && python3 scripts/release.py"
+    "release": "npm run package && npm run verify:package && python3 scripts/release.py",
+    "lint:firefox": "addons-linter dist/firefox --warnings-as-errors"
   },
   "devDependencies": {
     "@playwright/test": "1.64.0",
+    "addons-linter": "10.14.0",
     "prosemirror-history": "1.5.1",
     "prosemirror-model": "1.25.12",
     "prosemirror-state": "1.4.4",
     "prosemirror-view": "1.42.6"
-  }
+  },
+  "previewTag": "v0.1.1-preview.1"
 }
