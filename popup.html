@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ChatGPT Timekeeper</title>
+    <link rel="stylesheet" href="popup.css">
+    <script type="module" src="popup.js"></script>
+  </head>
+  <body>
+    <main>
+      <h1>ChatGPT Timekeeper</h1>
+      <label class="toggle"><span>Automatically add time</span><input id="enabled" type="checkbox" role="switch" disabled></label>
+      <p class="caption">Browser time:</p>
+      <p id="clock"></p>
+      <p id="zone"></p>
+      <p class="caption">Only runs on chatgpt.com</p>
+      <p class="privacy">The timestamp is visible in your message and sent to ChatGPT when you send.</p>
+      <p id="status" role="status" hidden></p>
+    </main>
+  </body>
+</html>

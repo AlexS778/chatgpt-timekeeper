@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*-preview.*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        node: ['22', '24']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      # Check before any command that rebuilds the checked-in content script.
+      - run: npm run check:build
+      - run: npm test
+
+  browser-and-package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run check:build
+      - run: npx playwright install --with-deps firefox chromium
+      - run: npm run test:browser
+      - name: Package, verify archives and check reproducibility
+        run: |
+          npm run release
+          cp dist/release/SHA256SUMS "$RUNNER_TEMP/timekeeper-SHA256SUMS"
+          npm run release
+          cmp "$RUNNER_TEMP/timekeeper-SHA256SUMS" dist/release/SHA256SUMS
+          git diff --exit-code -- content.js
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: unsigned-preview-packages
+          path: dist/release/
+          if-no-files-found: error
+          retention-days: 14

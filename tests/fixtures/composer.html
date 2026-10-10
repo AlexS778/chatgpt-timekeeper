@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Timekeeper fixture</title>
+<style>.ProseMirror { white-space: pre-wrap; min-height: 4em; } p { margin: 0; }</style>
+<script type="importmap">{"imports":{
+  "orderedmap":"/node_modules/orderedmap/dist/index.js",
+  "prosemirror-model":"/node_modules/prosemirror-model/dist/index.js",
+  "prosemirror-transform":"/node_modules/prosemirror-transform/dist/index.js",
+  "prosemirror-state":"/node_modules/prosemirror-state/dist/index.js",
+  "prosemirror-view":"/node_modules/prosemirror-view/dist/index.js",
+  "prosemirror-history":"/node_modules/prosemirror-history/dist/index.js",
+  "rope-sequence":"/node_modules/rope-sequence/dist/index.js"
+}}</script>
+<input id="search" aria-label="Search"><button id="unrelated">Send</button>
+<form id="composer">
+  <div role="textbox" contenteditable="true"></div>
+  <button type="submit" aria-label="Send">Send</button>
+</form>
+<script type="module">
+import { Schema } from 'prosemirror-model';
+import { EditorState, TextSelection } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import { history, undo } from 'prosemirror-history';
+// Real framework state: submission never reads editor DOM directly.
+window.fixture = { model: '', messages: [], submissions: 0, inputs: 0, failedSend: false, enabled: true, listeners: [] };
+window.browser = { storage: {
+  local: { async get() { return { enabled: fixture.enabled }; }, async set(value) {
+    fixture.enabled = value.enabled;
+    for (const listener of fixture.listeners) listener({ enabled: { newValue: value.enabled } }, 'local');
+  } },
+  onChanged: { addListener(listener) { fixture.listeners.push(listener); }, removeListener() {} }
+} };
+const schema = new Schema({ nodes: {
+  doc: { content: 'paragraph+' },
+  paragraph: { content: 'inline*', group: 'block', parseDOM: [{ tag: 'p' }], toDOM: () => ['p', 0] },
+  text: { group: 'inline' },
+  hard_break: { inline: true, group: 'inline', selectable: false, parseDOM: [{ tag: 'br' }], toDOM: () => ['br'] }
+}, marks: {
+  strong: { parseDOM: [{ tag: 'strong' }], toDOM: () => ['strong', 0] },
+  literal_paste: { parseDOM: [{ tag: 'span[data-prompt-literal-paste=""]' }],
+    toDOM: () => ['span', { 'data-prompt-literal-paste': '' }, 0] }
+} });
+fixture.bind = () => {
+  const form = document.querySelector('#composer');
+  const editor = form.querySelector('textarea,[contenteditable]');
+  if (editor.tagName !== 'TEXTAREA') {
+    fixture.view?.destroy();
+    const view = new EditorView({ mount: editor }, {
+      state: EditorState.create({ schema, plugins: [history()] }),
+      attributes: { role: 'textbox' },
+      dispatchTransaction(transaction) {
+        view.updateState(view.state.apply(transaction));
+        fixture.model = view.state.doc.textBetween(0, view.state.doc.content.size, '\n', '\n');
+      },
+      handleKeyDown(view, event) {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'z') return undo(view.state, view.dispatch, view);
+        return sendOnEnter(event);
+      }
+    });
+    fixture.view = view;
+    fixture.setDraft = text => {
+      const paragraphs = text.split('\n').map(line => schema.node('paragraph', null, line ? schema.text(line) : null));
+      const doc = schema.node('doc', null, paragraphs);
+      const transaction = view.state.tr.replaceWith(0, view.state.doc.content.size, doc.content);
+      transaction.setMeta('addToHistory', false);
+      transaction.setSelection(TextSelection.atEnd(transaction.doc));
+      view.dispatch(transaction); view.focus();
+    };
+    fixture.setRichDraft = text => {
+      const paragraph = schema.node('paragraph', null, schema.text(text, [schema.mark('strong')]));
+      view.dispatch(view.state.tr.replaceWith(0, view.state.doc.content.size, paragraph).setMeta('addToHistory', false));
+      view.focus();
+    };
+    fixture.setPastedDraft = text => {
+      const paragraphs = text.split('\n').map(line => schema.node('paragraph', null,
+        line ? schema.text(line, [schema.mark('literal_paste')]) : null));
+      const doc = schema.node('doc', null, paragraphs);
+      const transaction = view.state.tr.replaceWith(0, view.state.doc.content.size, doc.content);
+      transaction.setMeta('addToHistory', false);
+      transaction.setSelection(TextSelection.atEnd(transaction.doc));
+      view.dispatch(transaction); view.focus();
+    };
+  } else {
+    editor.addEventListener('input', () => { fixture.model = editor.value; });
+    editor.addEventListener('keydown', sendOnEnter);
+  }
+  editor.addEventListener('input', () => { fixture.inputs++; });
+  function sendOnEnter(event) {
+    if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey && !event.isComposing) {
+      event.preventDefault(); form.querySelector('button').click(); return true;
+    }
+    return false;
+  }
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    fixture.submissions++;
+    if (!fixture.failedSend) fixture.messages.push(fixture.model);
+  });
+};
+fixture.bind();
+</script></html>
