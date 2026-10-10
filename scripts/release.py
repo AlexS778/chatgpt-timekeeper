@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parent.parent
 VERSION = json.loads((ROOT / 'package.json').read_text())['version']
 if not re.fullmatch(r'\d+\.\d+\.\d+', VERSION):
     raise ValueError('Expected a numeric WebExtension version')
-TAG = f'v{VERSION}-preview.1'
+TAG = f'v{VERSION}-preview.2'
 FILES = sorted(['LICENSE', 'content.js', 'manifest.json', 'popup.css', 'popup.html',
                 'popup.js', 'src/settings.js', 'src/time.js'])
 OUTPUT = ROOT / 'dist' / 'release'

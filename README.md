@@ -11,7 +11,7 @@ Can you help me plan tomorrow?
 
 ## Preview release
 
-The first open-source preview is tagged **`v0.1.0-preview.1`**; the WebExtension manifest and package version remain **`0.1.0`** because extension versions use numeric components. Release notes: [docs/releases/v0.1.0-preview.1.md](docs/releases/v0.1.0-preview.1.md). This project is independent and is not affiliated with or endorsed by OpenAI.
+The public preview candidate is tagged **`v0.1.0-preview.2`**; the WebExtension manifest and package version remain **`0.1.0`** because extension versions use numeric components. Release notes: [docs/releases/v0.1.0-preview.2.md](docs/releases/v0.1.0-preview.2.md). This project is independent and is not affiliated with or endorsed by OpenAI.
 
 The unsigned Chromium and Firefox ZIPs contain the extension files with `manifest.json` at the archive root. Extract the matching ZIP into its own directory, then load that directory using the browser instructions below (Firefox selects its `manifest.json`). They are local testing packages, not signed store installs. To build them yourself, run `npm run release` with Node 22+ and Python 3.9+; output and SHA-256 checksums are in `dist/release/`. [Release preparation](docs/RELEASING.md) explains verification and publication.
 
@@ -80,6 +80,6 @@ CFFIXED_USER_HOME=/private/tmp/timekeeper-firefox-home npm run test:browser
 
 `src/` contains the reviewable modules. `npm run build` deterministically concatenates them into the checked-in isolated `content.js`; `npm run check:build` detects stale output. The popup uses local ES modules directly. Package directories contain only the shipping scripts, popup, manifest, and license; `npm run verify:package` checks their file list and source equality. `npm run package` replaces the generated `dist/chromium/` and `dist/firefox/` directories. `SYSTEM_DESIGN.md` remains the original specification, not a statement of completed acceptance.
 
-GitHub Actions runs unit/source checks on Node 22 and 24, plus Chromium/Firefox fixtures, package verification and repeat-build archive checks on Ubuntu. Actions are pinned to reviewed commits and CI has read-only repository permissions; it uploads test packages but does not publish GitHub releases. The first hosted CI run will occur after repository publication. See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and privacy-safe bug reports.
+GitHub Actions runs unit/source checks on Node 22 and 24, plus Chromium/Firefox fixtures, package verification and repeat-build archive checks on Ubuntu. Actions are pinned to reviewed commits and CI has read-only repository permissions; it uploads test packages but does not publish GitHub releases. Hosted CI checks are available in the repository’s [Actions page](https://github.com/AlexS778/chatgpt-timekeeper/actions). See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and privacy-safe bug reports.
 
 MIT licensed. No Safari wrapper or store publication is included.

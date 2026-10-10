@@ -1,6 +1,6 @@
 # Preview release preparation
 
-The first release tag is `v0.1.0-preview.1`; package, lockfile and browser manifest versions are `0.1.0`. Numeric browser versions do not carry a SemVer prerelease suffix. `scripts/release.py` currently creates preview `.1` for the package version; update that release identifier and notes explicitly for a later preview. Never move an already published tag.
+The public preview release tag is `v0.1.0-preview.2`; package, lockfile and browser manifest versions are `0.1.0`. Numeric browser versions do not carry a SemVer prerelease suffix. `scripts/release.py` currently creates preview `.2` for the package version; update that release identifier and notes explicitly for a later preview. Never move an already published tag.
 
 ## Local checks
 
@@ -30,10 +30,10 @@ On Linux use `sha256sum -c SHA256SUMS`. ZIPs have `manifest.json` at their root.
 
 Review the MIT license, source, documentation links, dependency lockfile, ignored files and [publication review](PUBLICATION_REVIEW.md). Keep limitations in README and release notes aligned with TODO and feasibility evidence. `SYSTEM_DESIGN.md` is the original proposal, not completed acceptance. Source includes historical console probes as documented evidence; those probes are not part of shipping assets and must not be used as the production adapter.
 
-After checks pass, commit the reviewed source on `main` and create an annotated local tag with `git tag -a v0.1.0-preview.1 -m 'ChatGPT Timekeeper 0.1.0 preview 1: unsigned development preview; production acceptance incomplete'`. Check a clean worktree, tag target and generated asset checksums. GitHub Actions has read-only permissions and does not create releases or push tags.
+After checks pass, commit the reviewed source on `main` and create an annotated local tag with `git tag -a v0.1.0-preview.2 -m 'ChatGPT Timekeeper 0.1.0 preview 2: unsigned development preview; production acceptance incomplete'`. Check a clean worktree, tag target and generated asset checksums. GitHub Actions has read-only permissions and does not create releases or push tags.
 
 ## Publication boundary
 
-Local preparation ends before adding a remote, pushing, creating a GitHub repository or creating a hosted release. Obtain the user's GitHub destination (`OWNER/REPOSITORY` or repository URL) first. Review existing remote state before pushing; do not overwrite an existing repository or release. Use the prepared tag and [release notes](releases/v0.1.0-preview.1.md), mark the GitHub release **prerelease**, and attach only the two versioned ZIPs and `SHA256SUMS`.
+The user approved the public destination `AlexS778/chatgpt-timekeeper`. For future publication to another destination, obtain its explicit approval first. Review existing remote state before pushing; do not overwrite an existing repository or release. Use the prepared tag and [release notes](releases/v0.1.0-preview.2.md), mark the GitHub release **prerelease**, and attach only the two versioned ZIPs and `SHA256SUMS`.
 
 Wait for the first hosted CI run to pass before making the prerelease visible. Compare CI artifact checksums with local assets. If a check fails, resolve it in a new reviewed commit before publication; do not claim that local passes prove hosted CI passed. Signed stores, Firefox ID registration, Safari packaging and production readiness require separate acceptance work.

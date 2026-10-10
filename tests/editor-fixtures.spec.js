@@ -206,6 +206,7 @@ test('SPA editor replacement is discovered at the next gesture; synthetic gestur
   await editor.dispatchEvent('keydown', { key: 'Enter' });
   expect((await sent(page)).at(-1)).toBe('New editor');
   await page.clock.runFor(1000); await editor.press('Backspace'); await editor.press('Enter');
+  await expect.poll(() => sent(page)).toHaveLength(2);
   expect((await sent(page)).at(-1)).toMatch(/^\[Local time:/);
 });
 test('native typing, backspace and framework paste update the model before a single send', async ({ page }) => {
@@ -217,8 +218,10 @@ test('native typing, backspace and framework paste update the model before a sin
   const original = await page.evaluate(() => fixture.model);
   expect(original).toContain('Привет 👋');
   await editor.press('Enter');
-  expect(await sent(page)).toHaveLength(1);
+  await expect.poll(() => sent(page)).toHaveLength(1);
   expect(unstamped((await sent(page))[0])).toBe(original);
+  await page.clock.runFor(1000);
+  expect(await sent(page)).toHaveLength(1);
 });
 
 test('ChatGPT literal-paste spans preserve multiline text, selection, undo and retry', async ({ page }) => {
