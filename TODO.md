@@ -8,8 +8,10 @@
 - [ ] Complete the remaining real-site Firefox acceptance matrix and long-draft checks in both browsers; record failures/skips before making a production-readiness claim.
 - [x] Prepare first open-source preview locally: Git on `main`, CI, publication review, contributor/release documentation, verified unsigned ZIPs/checksums and annotated `v0.1.0-preview.2` tag. See [publication review](docs/PUBLICATION_REVIEW.md).
 - [x] Publish reviewed source/tag to the approved public destination `AlexS778/chatgpt-timekeeper`, verify hosted CI and matching artifact checksums, and publish GitHub prerelease `v0.1.0-preview.2`.
-- [ ] Review Firefox extension ID and complete signing/store requirements before regular distribution. Safari and additional browsers require their own validation.
+- [x] Register permanent Firefox ID `chatgpt-timekeeper@alexs778.github.io` and submit desktop-only experimental version 0.1.2 with source, privacy and real screenshots on 2026-10-11. See [the submission log](docs/FIREFOX_SUBMISSION.md).
+- [ ] Await Mozilla review/signing/publication and verify signed installation consent before regular distribution. Safari and additional browsers require their own validation.
 
 - [x] Prepare local 0.1.1 store-readiness improvements: icons, homepage and popup links, offline privacy policy, conservative Firefox transmission disclosures, listing/reviewer notes, and Mozilla package validation in CI.
 - [x] Make timestamps readable with a GMT offset, preserve legacy-prefix refresh, and put clear explanations and real screenshots first in README. See [validation and image provenance](docs/READABLE_TIMESTAMPS.md).
-- [ ] Complete the submission checklist in [STORE.md](STORE.md): permanent Firefox ID and contact are selected, graphics are prepared; source archive, installed-package acceptance and store-account setup remain. Firefox submission is authorized as of 2026-10-11; no submission performed. Chrome is deferred by the publisher.
+- [x] Complete Firefox dashboard submission: monitored contact, permanent ID, source ZIP from candidate commit, desktop-only distribution, experimental listing, privacy text, reviewer notes, icon and screenshots. Version 0.1.2 is awaiting review; Chrome is deferred by the publisher.
+- [x] Check exact 0.1.2 Firefox package on 2026-10-11: Unicode click-send, a 6,115-character Enter-send draft and one harmless attachment-only send passed. Live IME/failure/undo and broader coverage remain incomplete.

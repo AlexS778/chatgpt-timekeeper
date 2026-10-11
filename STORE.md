@@ -1,6 +1,6 @@
 # Store metadata
 
-Last updated: 2026-10-11. **Draft, not submitted.** Firefox submission preparation is authorized; Chrome is deferred by the publisher because of its registration fee. Current candidate: extension version `0.1.2`, intended future GitHub preview `v0.1.2-preview.1` (not created). The published `v0.1.0-preview.2` remains unchanged.
+Last updated: 2026-10-11. **Firefox 0.1.2 submitted; awaiting review.** See [the submission log](docs/FIREFOX_SUBMISSION.md). Chrome is deferred by the publisher because of its registration fee. Current candidate: extension version `0.1.2`, intended future GitHub preview `v0.1.2-preview.1` (not created). The published `v0.1.0-preview.2` remains unchanged.
 
 ## Listing
 
@@ -30,7 +30,7 @@ Use the same limitations in both stores. Do not describe the preview as guarante
 
 Policy: [PRIVACY.md](PRIVACY.md), with matching offline [privacy.html](privacy.html).
 
-Public policy URL: `https://github.com/AlexS778/chatgpt-timekeeper/blob/main/PRIVACY.md`. An unauthenticated request returned HTTP 200 with the policy title and GMT-offset disclosure on 2026-10-11. Recheck after publishing this candidate's contact update.
+Public policy URL: `https://github.com/AlexS778/chatgpt-timekeeper/blob/main/PRIVACY.md`. An unauthenticated request returned HTTP 200 with the policy title and GMT-offset disclosure on 2026-10-11. The pushed support-email update was also verified publicly.
 
 | Data | Access/use | Storage or transmission |
 | --- | --- | --- |
@@ -98,17 +98,18 @@ Candidate 0.1.1 adds a readable date/time and GMT offset, original clock icons, 
 - [x] Draft listing, policy, permissions explanations, limitations and reviewer build steps.
 - [x] Mozilla Add-ons Linter added to local checks and CI; warnings fail validation.
 - [ ] Complete remaining real-site acceptance checks in TODO.md, then test the exact final installed packages, including the revised Firefox installation consent.
-- [ ] Finalize Firefox ID, desktop-only platform selection, store accounts and publisher details; provide a monitored contact email. The GitHub noreply commit address is not a support email.
+- [x] Finalize Firefox ID, desktop-only platform selection, Mozilla account and monitored contact details. The GitHub noreply commit address remains only for commits.
 - [x] Prepare store-size composition of the captured real-site README screenshots, the Chrome small promo tile and final icon review. Captures remain unchanged; no fixtures or invented UI are presented as real ChatGPT use.
-- [ ] Publish source/policy, verify URLs, package source ZIP and final browser ZIPs, verify lockfile installation, artifact bytes and hosted CI for the exact submission commit.
+- [x] Publish source/policy, verify URLs, package source ZIP and final browser ZIPs, verify lockfile installation, artifact bytes and hosted CI for the exact submission commit.
 - [ ] Match Chrome dashboard declarations to the handling table and Firefox declaration; confirm any reviewer categorization questions.
 - [x] Obtain Firefox submission authorization from the publisher; Chrome is deferred.
-- [ ] Complete account/legal gates, submit Firefox and record signing/review outcomes. Local validation is not store approval.
+- [x] Complete Mozilla account gates and submit Firefox with source and listing media; record actual submission outcome.
+- [ ] Await signing/review/publication and verify signed installation consent. Local validation is not store approval.
 
 ## Version history
 
 - 0.1.1: uploaded as an incomplete AMO draft; cancellation authorized by the publisher because its manifest incorrectly enabled Android distribution. No public release or approval.
-- 0.1.2: desktop-only replacement candidate; intended preview tag uncreated. Runtime sending behavior unchanged.
+- 0.1.2: desktop-only replacement submitted to AMO on 2026-10-11; awaiting review. Intended preview tag uncreated. Runtime sending behavior unchanged.
 - 0.1.0: unsigned GitHub preview `v0.1.0-preview.2`; no store submission or rejection history.
 
 ## References
