@@ -37,7 +37,7 @@ npm run package
 
 Reload your ChatGPT tab, pin the extension if you like, and send a message. The popup shows a time preview and the on/off switch.
 
-You can also download the [published preview](https://github.com/AlexS778/chatgpt-timekeeper/releases/tag/v0.1.0-preview.2). That older version uses the longer timestamp format; the shorter format shown here is in the unreleased 0.1.1 source.
+You can also download the [published preview](https://github.com/AlexS778/chatgpt-timekeeper/releases/tag/v0.1.0-preview.2). That older version uses the longer timestamp format; the shorter format shown here is in the unreleased 0.1.2 source.
 
 **A couple of things to know:** stop dictation before sending. This preview works with ordinary text messages, and ChatGPT interface changes may affect it. Safari, mobile browsers and native apps aren't supported. More testing is still needed before a regular store release.
 
@@ -58,7 +58,7 @@ The readable-format change passed 21 unit/source checks and 64 Firefox/Chromium 
 
 The published preview is tagged **`v0.1.0-preview.2`**; its WebExtension manifest and package use numeric version **`0.1.0`**. Release notes: [docs/releases/v0.1.0-preview.2.md](docs/releases/v0.1.0-preview.2.md). This project is independent and is not affiliated with or endorsed by OpenAI.
 
-The unsigned Chromium and Firefox ZIPs contain the extension files with `manifest.json` at the archive root. Extract the matching ZIP into its own directory, then load that directory using the browser instructions below (Firefox selects its `manifest.json`). They are local testing packages, not signed store installs. The current source prepares the **unreleased 0.1.1** store-readiness candidate (`v0.1.1-preview.1`); the published 0.1.0 ZIPs are unchanged. To reproduce the published assets, check out `v0.1.0-preview.2` first. To build the current candidate, run `npm run release` with Node 22+ and Python 3.9+; output and SHA-256 checksums are in `dist/release/`. [Release preparation](docs/RELEASING.md) explains verification and publication.
+The unsigned Chromium and Firefox ZIPs contain the extension files with `manifest.json` at the archive root. Extract the matching ZIP into its own directory, then load that directory using the browser instructions below (Firefox selects its `manifest.json`). They are local testing packages, not signed store installs. The current source prepares the **unreleased 0.1.2** store-readiness candidate (`v0.1.2-preview.1`); the published 0.1.0 ZIPs are unchanged. To reproduce the published assets, check out `v0.1.0-preview.2` first. To build the current candidate, run `npm run release` with Node 22+ and Python 3.9+; output and SHA-256 checksums are in `dist/release/`. [Release preparation](docs/RELEASING.md) explains verification and publication.
 
 ### Known limitations
 
@@ -76,7 +76,7 @@ The unsigned Chromium and Firefox ZIPs contain the extension files with `manifes
 4. Reload the ChatGPT test tab. Open the extension popup to check the toggle.
 5. Use a fresh temporary chat and the harmless prompts in [docs/MANUAL_TESTS.md](docs/MANUAL_TESTS.md).
 
-Temporary add-ons disappear when Firefox restarts. Regular distribution requires Mozilla signing; this project does not contain a signed XPI. Firefox packaging adds an extension ID and required data disclosures for chat text (`personalCommunications`) and the broad time-zone information suggested by the GMT offset (`locationInfo`). The extension sends through ChatGPT's normal flow and has no developer collection; see [the privacy policy](PRIVACY.md). Desktop Firefox 140 and Android 142 are the consent-schema minimums, not a claim of tested compatibility; Android distribution remains out of scope. See [Mozilla's manifest documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings). The ID must be checked for availability before a store submission.
+Temporary add-ons disappear when Firefox restarts. Regular distribution requires Mozilla signing; this project does not contain a signed XPI. Firefox packaging adds an extension ID and required data disclosures for chat text (`personalCommunications`) and the broad time-zone information suggested by the GMT offset (`locationInfo`). The extension sends through ChatGPT's normal flow and has no developer collection; see [the privacy policy](PRIVACY.md). Firefox 142 is a conservative schema/tooling minimum, not a claim of tested compatibility; desktop consent itself begins at 140. The package omits `gecko_android` for desktop-only distribution. See [Mozilla's manifest documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings). The permanent ID was selected before signing; AMO registration/signing status is recorded in [the submission log](docs/FIREFOX_SUBMISSION.md).
 
 ## Install for Chrome testing
 

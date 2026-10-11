@@ -1,10 +1,10 @@
 # Store metadata
 
-Last updated: 2026-10-11. **Draft, not submitted.** Firefox submission preparation is authorized; Chrome is deferred by the publisher because of its registration fee. Current candidate: extension version `0.1.1`, intended future GitHub preview `v0.1.1-preview.1` (not created). The published `v0.1.0-preview.2` remains unchanged.
+Last updated: 2026-10-11. **Draft, not submitted.** Firefox submission preparation is authorized; Chrome is deferred by the publisher because of its registration fee. Current candidate: extension version `0.1.2`, intended future GitHub preview `v0.1.2-preview.1` (not created). The published `v0.1.0-preview.2` remains unchanged.
 
 ## Listing
 
-Name: **ChatGPT Timekeeper**. Summary: **Adds your browser-local time to outgoing ChatGPT messages.** Language: English. Category: Productivity.
+Name: **ChatGPT Timekeeper**. Summary: **Adds your browser-local time to outgoing ChatGPT messages.** Language: English. Chrome category: Productivity; AMO category: Social & Communication.
 
 Suggested detailed description (plain text for dashboard forms):
 
@@ -15,7 +15,7 @@ Open the popup to preview your browser's time or turn automatic timestamps off. 
 
 This is an early desktop Chrome and Firefox preview. Ordinary text sending has been tested, but compatibility can change when ChatGPT changes its interface. Sending during active dictation is unsupported: stop dictation before sending. Safari, mobile browsers and native apps are outside this preview.
 
-IME input, attachment-only sends, long drafts and failure/undo behavior still need further live-site testing. Unsupported editor layouts may send without a timestamp. Check the visible message after sending.
+IME input and failure/undo behavior still need further live-site testing. A harmless attachment-only send and a 6,115-character text draft were checked in Firefox 157.0.1; these examples do not establish every attachment or draft path. Unsupported editor layouts may send without a timestamp. Check the visible message after sending.
 
 The extension saves only its on/off preference locally. It handles your current draft temporarily, keeps no prompt history and sends no data to its developer. There is no analytics or advertising.
 
@@ -63,9 +63,9 @@ Full dashboard copy and graphics checklist: [CHROMEWEBSTORE.md](CHROMEWEBSTORE.m
 
 Generated Firefox manifest uses `required: ["personalCommunications", "locationInfo"]`. This is a conservative interpretation of Mozilla's broad transmission definition: the extension facilitates sending a chat message containing a GMT offset that can suggest a broad time-zone region. It does **not** add developer collection or GPS access. Required categories are disclosed by Firefox before installation; users can cancel installation or stop stamping with the popup toggle.
 
-Desktop minimum `140.0` and Android schema minimum `142.0` support built-in consent declarations. These numbers are not tested compatibility claims. **Select desktop-only distribution; do not advertise Android support.** Actual installed-browser evidence remains Firefox 157.0.1 and Chrome 153.0.8010.36. The previous preview's `none` declaration must not be reused for this candidate. Confirm categorization with AMO review; do not weaken disclosures just to remove a prompt.
+Minimum `142.0` keeps the built-in consent declaration valid in Mozilla's cross-platform schema checker; it is not a tested compatibility claim. Desktop consent itself begins at 140, but the linter inherits the desktop minimum for its Android schema check when `gecko_android` is absent. **Omit `gecko_android` for desktop-only distribution; do not advertise Android support.** AMO's upload UI forced the Android checkbox on when the earlier candidate included that key, so it was removed before submission. Actual installed-browser evidence remains Firefox 157.0.1 and Chrome 153.0.8010.36. The previous preview's `none` declaration must not be reused for this candidate. Confirm categorization with AMO review; do not weaken disclosures just to remove a prompt.
 
-The publisher selected permanent ID `chatgpt-timekeeper@alexs778.github.io` on 2026-10-11, replacing the unsigned preview's provisional `chatgpt-timekeeper@extensions.local`. It is an identifier, not a support mailbox. AMO availability/registration is still unverified. Once signed, preserve the registered ID on updates.
+The publisher selected permanent ID `chatgpt-timekeeper@alexs778.github.io` on 2026-10-11, replacing the unsigned preview's provisional `chatgpt-timekeeper@extensions.local`. It is an identifier, not a support mailbox. AMO has reserved this ID for the publisher’s incomplete draft. Once signed, preserve the registered ID on updates.
 
 Support email: `probe-mumble7g@icloud.com` (publisher supplied, monitored). Support website: `https://github.com/AlexS778/chatgpt-timekeeper/issues`. Homepage: `https://github.com/AlexS778/chatgpt-timekeeper`. License: MIT. Mark **experimental** and select **desktop Firefox only**, all desktop operating systems; exclude Android.
 
@@ -81,11 +81,11 @@ The add-on changes text in the ordinary ChatGPT composer. It does not use privat
 2. On desktop chatgpt.com, use a fresh temporary chat and an invented draft such as “What time zone is in this message?” Send normally with the button or composer Enter. Verify one visible leading timestamp, original text preservation and one submission.
 3. Switch stamping off, send another invented draft and verify no added timestamp. Switch on again. Shift+Enter should insert a line break without sending.
 4. Try keyboard focus on Send (Space/Enter) and New chat navigation. Use the manual matrix in `docs/MANUAL_TESTS.md` for the full acceptance gate.
-5. Active dictation is unsupported. Unknown editor structures can send without a stamp. The adapter uses deprecated native editing for undo preservation; ChatGPT interface changes can break it. IME, attachment-only, long-draft and failure/undo real-site acceptance is incomplete. Fixture results are not proof of every live-site path.
+5. Active dictation is unsupported. Unknown editor structures can send without a stamp. The adapter uses deprecated native editing for undo preservation; ChatGPT interface changes can break it. IME and failure/undo real-site acceptance is incomplete. One harmless attachment-only send and one 6,115-character draft passed in Firefox 157.0.1; broader acceptance remains limited. Fixture results are not proof of every live-site path.
 
 Signed-out access was validated only in Chrome; do not assume it suffices for Firefox review. **Before submission**, provide any required disposable test-account credentials privately through AMO's reviewer notes, never in this file. No personal credentials are included here.
 
-Source build: Node 22+ and Python 3.9+; local validation used Node 22.21.1, npm 10.9.4 and Python 3.11.5 on macOS. Supply a ZIP of the reviewed Git commit as described in `docs/RELEASING.md`. After extracting the source, `npm run check:build`, `npm run package`, `npm run verify:package`, and `npm run release` reproduce the Firefox package without installing dependencies. Compare `dist/release/chatgpt-timekeeper-v0.1.1-preview.1-firefox.zip` with the uploaded ZIP. For automated tests/lint only, run `npm ci`, `npm test`, `npm run lint:firefox`, and the browser commands in README. `scripts/build.mjs` concatenates the reviewable `src/` modules into `content.js`, without minification or obfuscation. PNG icons are checked-in original artwork; `python3 scripts/icons.py` explains their construction and is not required for the package build. Listing graphics and their development-only renderer are excluded from browser ZIPs. No external downloads at extension runtime.
+Source build: Node 22+ and Python 3.9+; local validation used Node 22.21.1, npm 10.9.4 and Python 3.11.5 on macOS. Supply a ZIP of the reviewed Git commit as described in `docs/RELEASING.md`. After extracting the source, `npm run check:build`, `npm run package`, `npm run verify:package`, and `npm run release` reproduce the Firefox package without installing dependencies. Compare `dist/release/chatgpt-timekeeper-v0.1.2-preview.1-firefox.zip` with the uploaded ZIP. For automated tests/lint only, run `npm ci`, `npm test`, `npm run lint:firefox`, and the browser commands in README. `scripts/build.mjs` concatenates the reviewable `src/` modules into `content.js`, without minification or obfuscation. PNG icons are checked-in original artwork; `python3 scripts/icons.py` explains their construction and is not required for the package build. Listing graphics and their development-only renderer are excluded from browser ZIPs. No external downloads at extension runtime.
 
 ### Release notes
 
@@ -107,7 +107,8 @@ Candidate 0.1.1 adds a readable date/time and GMT offset, original clock icons, 
 
 ## Version history
 
-- 0.1.1: local store-readiness candidate; not tagged, signed or submitted.
+- 0.1.1: uploaded as an incomplete AMO draft; cancellation authorized by the publisher because its manifest incorrectly enabled Android distribution. No public release or approval.
+- 0.1.2: desktop-only replacement candidate; intended preview tag uncreated. Runtime sending behavior unchanged.
 - 0.1.0: unsigned GitHub preview `v0.1.0-preview.2`; no store submission or rejection history.
 
 ## References

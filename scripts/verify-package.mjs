@@ -43,9 +43,9 @@ for (const target of ['chromium', 'firefox']) {
   const manifest = JSON.parse(await readFile(new URL('manifest.json', directory), 'utf8'));
   if (target === 'firefox') {
     assert.deepEqual(manifest.browser_specific_settings, { gecko: {
-      id: 'chatgpt-timekeeper@alexs778.github.io', strict_min_version: '140.0',
+      id: 'chatgpt-timekeeper@alexs778.github.io', strict_min_version: '142.0',
       data_collection_permissions: { required: ['personalCommunications', 'locationInfo'] }
-    }, gecko_android: { strict_min_version: '142.0' } });
+    } });
     delete manifest.browser_specific_settings;
   }
   assert.deepEqual(manifest, base, `${target}: unexpected manifest changes`);

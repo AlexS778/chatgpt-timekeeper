@@ -1,6 +1,6 @@
 {
   "name": "chatgpt-timekeeper",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -25,5 +25,5 @@
     "prosemirror-state": "1.4.4",
     "prosemirror-view": "1.42.6"
   },
-  "previewTag": "v0.1.1-preview.1"
+  "previewTag": "v0.1.2-preview.1"
 }

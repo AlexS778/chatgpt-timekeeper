@@ -1,6 +1,6 @@
 # Preview release preparation
 
-The published release is `v0.1.0-preview.2` (numeric extension version `0.1.0`); reproduce it from that tag. Current source is the **unreleased** `0.1.1` candidate, with `package.json` setting `previewTag` to `v0.1.1-preview.1`. The release script checks this identifier against the numeric version. Change the identifier and notes deliberately for later previews; never move an already published tag.
+The published release is `v0.1.0-preview.2` (numeric extension version `0.1.0`); reproduce it from that tag. Current source is the **unreleased** `0.1.2` candidate, with `package.json` setting `previewTag` to `v0.1.2-preview.1`. The release script checks this identifier against the numeric version. Change the identifier and notes deliberately for later previews; never move an already published tag.
 
 ## Local checks
 

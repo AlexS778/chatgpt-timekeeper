@@ -16,9 +16,9 @@ for (const target of ['firefox', 'chromium']) {
   const browserManifest = structuredClone(manifest);
   if (target === 'firefox') browserManifest.browser_specific_settings = { gecko: {
     id: 'chatgpt-timekeeper@alexs778.github.io',
-    strict_min_version: '140.0',
+    strict_min_version: '142.0',
     data_collection_permissions: { required: ['personalCommunications', 'locationInfo'] }
-  }, gecko_android: { strict_min_version: '142.0' } };
+  } };
   await writeFile(new URL('manifest.json', destination), JSON.stringify(browserManifest, null, 2) + '\n');
   console.log(`Prepared dist/${target}/ (unsigned development package)`);
 }
