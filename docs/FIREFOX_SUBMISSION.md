@@ -1,6 +1,6 @@
 # Firefox submission and release record
 
-Public Firefox release **0.1.2** verified on **2026-10-14**: [Mozilla Add-ons listing](https://addons.mozilla.org/en-US/firefox/addon/chatgpt-timekeeper/). Signed installation consent remains untested.
+Public Firefox release **0.1.3** verified on **2026-10-14**: [Mozilla Add-ons listing](https://addons.mozilla.org/en-US/firefox/addon/chatgpt-timekeeper/). Signed installation consent remains untested.
 
 Prepared 2026-10-11. Candidate version **0.1.2**, permanent Firefox ID **`chatgpt-timekeeper@alexs778.github.io`**, selected by the publisher before first signing. Monitored listing contact: **`probe-mumble7g@icloud.com`**. Runtime remains small and dependency-free. No sending-module changes; `content.js` SHA-256 remains `292c3147a1a3898865d894db88f081fca7e700f7912b61ef1bb5e150d387c92b`.
 
@@ -56,3 +56,21 @@ Downloaded the [public XPI](https://addons.mozilla.org/firefox/downloads/file/51
 - Mozilla signature files are present: `META-INF/cose.manifest`, `cose.sig`, `manifest.mf`, `mozilla.sf`, and `mozilla.rsa`. Their cryptographic verification and a real store installation/consent check were not performed in this run.
 
 Public distribution is verified. The experimental status and existing compatibility limitations remain; publication does not complete the real-site acceptance matrix. Chrome remains deferred. No GitHub tag or release was created by this verification, and the historical submission record above remains unchanged.
+
+## Version 0.1.3 update — 2026-10-14
+
+The publisher explicitly authorized pushing the formatted-text fix and submitting a new Firefox version. Source commit **`c5f471c3d438266533ec9fe85d3b2c59249a5db0`**, tag **`v0.1.3-preview.2`**, targets numeric extension version **0.1.3**. Permanent ID, permissions, privacy policy, experimental status and desktop-only scope are unchanged.
+
+The first tag `v0.1.3-preview.1` was preserved after hosted CI failed an immediate selection assertion in the literal-paste fixture (87/88 passed); it published no release. Selection checks now wait for asynchronous editor restoration. No runtime files changed in this follow-up. [The final release CI](https://github.com/AlexS778/chatgpt-timekeeper/actions/runs/38635629762) passed Node 22/24 unit jobs (21 checks each), all **88 browser fixtures**, Mozilla lint (**0 errors, 0 warnings, 0 notices**), package checks, reproducibility and publication. The main-branch CI also passed. The [public GitHub prerelease](https://github.com/AlexS778/chatgpt-timekeeper/releases/tag/v0.1.3-preview.2) has the two ZIPs and SHA256SUMS; downloaded assets match local builds byte for byte.
+
+A fresh `git archive` from the final tag was extracted and built without installing dependencies; both browser ZIPs match the tested/published artifacts. Source archive `timekeeper-source-v0.1.3-preview.2.zip` SHA-256: `c4e72d02331728b8fdc811e97c484d7cd6dcf61ac20edca0f02eb27d32431b9b`. Firefox upload ZIP SHA-256: `62c76eef7ed27ab2119f897c0751c2017c64997c0c5f984318c6a259b06cf163`.
+
+AMO validated the uploaded Firefox ZIP without errors or warnings. Firefox was checked, Firefox for Android unchecked. Source archive, user-facing release notes and reviewer build/test instructions were saved. The source-code question was answered Yes because the build concatenates modules; the same exact source archive was supplied in the required source-upload step. The final page displayed **Version Submitted** at approximately 20:56 UTC / 23:56 Europe/Moscow. Version ID **6578643**, file ID **5122776**. The [version editor](https://addons.mozilla.org/en-US/developers/addon/chatgpt-timekeeper/versions/6578643) initially showed Awaiting Review, the source-code View current link and the saved notes. No private credentials or legal/account changes were involved.
+
+### Public distribution
+
+At 20:56:57 UTC, Mozilla's [public API](https://addons.mozilla.org/api/v5/addons/addon/chatgpt-timekeeper/) returned current version **0.1.3**, file **5122776** with status **public**, and reviewed timestamp `2026-10-14T20:56:38Z`. The add-on remains public, enabled and experimental. Compatibility is Firefox desktop minimum 142.0 with the unchanged `personalCommunications` and `locationInfo` disclosures.
+
+Downloaded the [0.1.3 XPI](https://addons.mozilla.org/firefox/downloads/file/5122776/chatgpt_timekeeper-0.1.3.xpi): size **25,233 bytes**, SHA-256 **`5d1cb8a9475f6f07721b84099df4a3b7d282c3c5169f31c159b33119409a8777`**, matching the API hash, with valid ZIP CRC. All shipping files other than manifest.json match the submitted Firefox build byte for byte. Mozilla removed the manifest's final newline; parsed manifest data is identical. Signature files `META-INF/cose.manifest`, `cose.sig`, `manifest.mf`, `mozilla.sf` and `mozilla.rsa` are present. Cryptographic signature verification and signed installation/consent testing are not claimed.
+
+The refreshed developer dashboard independently showed **Approved**, file 5122776, listed version **0.1.3**, the saved notes and source View current link. Public distribution is verified. Remaining real-site acceptance and dictation limitations are unchanged; this remains an experimental desktop release, with no Chrome Web Store submission.

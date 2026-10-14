@@ -1,6 +1,6 @@
-# Formatted-paste fix — local 0.1.3 candidate
+# Formatted-paste fix — version 0.1.3
 
-Prepared and validated 2026-10-14. Intended GitHub preview: `v0.1.3-preview.2`; Release publication and AMO submission were authorized after local validation. The first tag, `v0.1.3-preview.1`, failed hosted CI on an immediate selection assertion in the literal-paste fixture (87/88 passed); no release was published. That assertion and the matching rich-selection assertion now wait for asynchronous restoration. `v0.1.3-preview.2` is the replacement candidate; runtime files are unchanged.
+Prepared and validated 2026-10-14. Intended GitHub preview: `v0.1.3-preview.2`; Release publication and AMO submission were authorized after local validation. The first tag, `v0.1.3-preview.1`, failed hosted CI on an immediate selection assertion in the literal-paste fixture (87/88 passed); no release was published. That assertion and the matching rich-selection assertion now wait for asynchronous restoration. `v0.1.3-preview.2` is the published replacement; runtime files are unchanged. Hosted CI and Mozilla submission are recorded below.
 
 ## Reproduction and change
 
@@ -33,4 +33,10 @@ The temporary candidate was removed after testing. The debugging page returned t
 - Chromium ZIP SHA-256: `0b12c40569d2b497b6efa2b25258dace380e7b4ffcd43682fd7bde175a2ae959`.
 - Firefox ZIP SHA-256: `62c76eef7ed27ab2119f897c0751c2017c64997c0c5f984318c6a259b06cf163`.
 
-These are local results. No hosted CI run or signed 0.1.3 installation is claimed. The new rich pathway has a real-site Firefox pointer-send check; live Chrome rich-send, Firefox rich Enter and the wider IME/failure/undo matrix remain separate acceptance work. Unsupported top-level structures and older prefixes embedded inside a rich block remain unchanged rather than being rewritten or stacked. Active dictation remains unsupported. Native editing and ChatGPT markup can change; this fix does not establish 1.0 readiness.
+The initial checks above were local; hosted CI is recorded below. No signed 0.1.3 installation is claimed. The new rich pathway has a real-site Firefox pointer-send check; live Chrome rich-send, Firefox rich Enter and the wider IME/failure/undo matrix remain separate acceptance work. Unsupported top-level structures and older prefixes embedded inside a rich block remain unchanged rather than being rewritten or stacked. Active dictation remains unsupported. Native editing and ChatGPT markup can change; this fix does not establish 1.0 readiness.
+
+## Hosted release and submission
+
+The final tag `v0.1.3-preview.2` targets `c5f471c3d438266533ec9fe85d3b2c59249a5db0`. [Hosted CI](https://github.com/AlexS778/chatgpt-timekeeper/actions/runs/38635629762) passed both Node 22/24 unit jobs, all 88 browser fixtures, Mozilla lint (zero errors/warnings/notices), package verification, reproducibility and publication. The [public prerelease](https://github.com/AlexS778/chatgpt-timekeeper/releases/tag/v0.1.3-preview.2) contains the two versioned ZIPs and SHA256SUMS. Downloaded assets match the local artifacts and clean source-archive rebuilds byte for byte.
+
+Mozilla accepted version 0.1.3 with the exact source archive, release notes and reviewer build instructions; its version page initially showed Awaiting Review and public distribution was verified shortly afterward. [Submission details](FIREFOX_SUBMISSION.md#version-013-update--2026-10-14). The Firefox listing now distributes 0.1.3.

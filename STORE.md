@@ -1,8 +1,8 @@
 # Store metadata
 
-Last updated: 2026-10-14. **Firefox 0.1.2 publicly available on [Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/chatgpt-timekeeper/).** See [the submission log](docs/FIREFOX_SUBMISSION.md). Chrome is deferred by the publisher because of its registration fee. Current Firefox store release: extension version `0.1.2`, GitHub preview `v0.1.2-preview.1` with ready-to-load browser ZIPs. The published `v0.1.0-preview.2` remains unchanged.
+Last updated: 2026-10-14. **Firefox 0.1.3 publicly available on [Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/chatgpt-timekeeper/).** See [the submission log](docs/FIREFOX_SUBMISSION.md). Chrome is deferred by the publisher because of its registration fee. Current Firefox store release: extension version `0.1.3`. GitHub preview `v0.1.3-preview.2` has ready-to-load 0.1.3 browser ZIPs. The published `v0.1.0-preview.2` remains unchanged.
 
-Local source/package candidate: **0.1.3**, intended preview tag `v0.1.3-preview.2` (not created). The formatted-paste fix is locally validated; [evidence and limits](docs/FORMATTED_PASTE.md). Neither the AMO listing nor the published 0.1.2 GitHub assets were updated.
+Version **0.1.3** is published as GitHub preview `v0.1.3-preview.2` and submitted to Mozilla with source and reviewer instructions; public 0.1.3 distribution was verified. [Evidence and limits](docs/FORMATTED_PASTE.md); [submission record](docs/FIREFOX_SUBMISSION.md#version-013-update--2026-10-14). The existing experimental listing remains unchanged; Firefox now publicly distributes 0.1.3.
 
 ## Listing
 
@@ -47,7 +47,7 @@ No sale, unrelated use or credit/lending use. No extension-initiated network req
 
 ## Chrome Web Store
 
-Store submission remains deferred. Chrome users can download the **0.1.2** Chromium ZIP from [GitHub Releases](https://github.com/AlexS778/chatgpt-timekeeper/releases/tag/v0.1.2-preview.1), extract it, and load it through Developer mode. No user build step is required; [README instructions](README.md#install-in-chrome).
+Store submission remains deferred. Chrome users can download the **0.1.3** Chromium ZIP from [GitHub Releases](https://github.com/AlexS778/chatgpt-timekeeper/releases/tag/v0.1.3-preview.2), extract it, and load it through Developer mode. No user build step is required; [README instructions](README.md#install-in-chrome).
 
 ### Single purpose
 
@@ -69,7 +69,7 @@ Generated Firefox manifest uses `required: ["personalCommunications", "locationI
 
 Minimum `142.0` keeps the built-in consent declaration valid in Mozilla's cross-platform schema checker; it is not a tested compatibility claim. Desktop consent itself begins at 140, but the linter inherits the desktop minimum for its Android schema check when `gecko_android` is absent. **Omit `gecko_android` for desktop-only distribution; do not advertise Android support.** AMO's upload UI forced the Android checkbox on when the earlier candidate included that key, so it was removed before submission. Actual installed-browser evidence remains Firefox 157.0.1 and Chrome 153.0.8010.36. The previous preview's `none` declaration must not be reused for this candidate. Confirm categorization with AMO review; do not weaken disclosures just to remove a prompt.
 
-The publisher selected permanent ID `chatgpt-timekeeper@alexs778.github.io` on 2026-10-11, replacing the unsigned preview's provisional `chatgpt-timekeeper@extensions.local`. It is an identifier, not a support mailbox. AMO publicly distributes version 0.1.2 under this ID. Preserve the registered ID on updates.
+The publisher selected permanent ID `chatgpt-timekeeper@alexs778.github.io` on 2026-10-11, replacing the unsigned preview's provisional `chatgpt-timekeeper@extensions.local`. It is an identifier, not a support mailbox. AMO publicly distributes version 0.1.3 under this ID. Preserve the registered ID on updates.
 
 Support email: `probe-mumble7g@icloud.com` (publisher supplied, monitored). Support website: `https://github.com/AlexS778/chatgpt-timekeeper/issues`. Homepage: `https://github.com/AlexS778/chatgpt-timekeeper`. License: MIT. Mark **experimental** and select **desktop Firefox only**, all desktop operating systems; exclude Android.
 
@@ -89,11 +89,11 @@ The add-on changes text in the ordinary ChatGPT composer. It does not use privat
 
 Signed-out access was validated only in Chrome; do not assume it suffices for Firefox review. **Before submission**, provide any required disposable test-account credentials privately through AMO's reviewer notes, never in this file. No personal credentials are included here.
 
-Source build: Node 22+ and Python 3.9+; local validation used Node 22.21.1, npm 10.9.4 and Python 3.11.5 on macOS. Supply a ZIP of the reviewed Git commit as described in `docs/RELEASING.md`. After extracting the source, `npm run check:build`, `npm run package`, `npm run verify:package`, and `npm run release` reproduce the Firefox package without installing dependencies. For the next 0.1.3 submission, compare `dist/release/chatgpt-timekeeper-v0.1.3-preview.2-firefox.zip` with the upload. The historical 0.1.2 uploaded artifact identity remains in the submission log. For automated tests/lint only, run `npm ci`, `npm test`, `npm run lint:firefox`, and the browser commands in README. `scripts/build.mjs` concatenates the reviewable `src/` modules into `content.js`, without minification or obfuscation. PNG icons are checked-in original artwork; `python3 scripts/icons.py` explains their construction and is not required for the package build. Listing graphics and their development-only renderer are excluded from browser ZIPs. No external downloads at extension runtime.
+Source build: Node 22+ and Python 3.9+; local validation used Node 22.21.1, npm 10.9.4 and Python 3.11.5 on macOS. Supply a ZIP of the reviewed Git commit as described in `docs/RELEASING.md`. After extracting the source, `npm run check:build`, `npm run package`, `npm run verify:package`, and `npm run release` reproduce the Firefox package without installing dependencies. For the 0.1.3 submission from commit c5f471c, compare `dist/release/chatgpt-timekeeper-v0.1.3-preview.2-firefox.zip` with the upload. The historical 0.1.2 uploaded artifact identity remains in the submission log. For automated tests/lint only, run `npm ci`, `npm test`, `npm run lint:firefox`, and the browser commands in README. `scripts/build.mjs` concatenates the reviewable `src/` modules into `content.js`, without minification or obfuscation. PNG icons are checked-in original artwork; `python3 scripts/icons.py` explains their construction and is not required for the package build. Listing graphics and their development-only renderer are excluded from browser ZIPs. No external downloads at extension runtime.
 
 ### Release notes
 
-Candidate 0.1.3 fixes missing timestamps on supported formatted text, including bold text, links, headings, lists and code blocks. A new rich prefix appears as a plain timestamp paragraph followed by a blank line; original message text and formatting are preserved. Explicit retries refresh one prefix. A failed edit that cannot be undone is retained without automatic submission. Active dictation remains unsupported. [Prepared notes](docs/releases/v0.1.3-preview.2.md).
+Version 0.1.3 fixes missing timestamps on supported formatted text, including bold text, links, headings, lists and code blocks. A new rich prefix appears as a plain timestamp paragraph followed by a blank line; original message text and formatting are preserved. Explicit retries refresh one prefix. A failed edit that cannot be undone is retained without automatic submission. Active dictation remains unsupported. [Prepared notes](docs/releases/v0.1.3-preview.2.md).
 
 ## Submission gate
 
@@ -113,7 +113,7 @@ Candidate 0.1.3 fixes missing timestamps on supported formatted text, including 
 
 ## Version history
 
-- 0.1.3: local formatted-paste fix candidate, prepared 2026-10-14. 21 unit checks, 88 browser fixtures, package verification, lint and repeat-build checks passed. Installed Firefox rich-paste click-send verified. No tag, GitHub publication or AMO submission.
+- 0.1.3: formatted-paste fix, published on GitHub as `v0.1.3-preview.2` and submitted to Mozilla on 2026-10-14. Hosted CI passed 21 unit checks on Node 22/24, all 88 browser fixtures, package verification, lint and repeat-build checks. Installed Firefox rich-paste click-send verified. AMO version 6578643 / file 5122776 became public after submission; source and notes saved.
 
 - 0.1.1: uploaded as an incomplete AMO draft; cancellation authorized by the publisher because its manifest incorrectly enabled Android distribution. No public release or approval.
 - 0.1.2: desktop-only replacement submitted to AMO on 2026-10-11; public experimental release verified on 2026-10-14. GitHub preview `v0.1.2-preview.1` provides unsigned Chrome/Firefox ZIPs through CI-gated release publication. Runtime sending behavior unchanged.
