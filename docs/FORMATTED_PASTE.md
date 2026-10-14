@@ -1,6 +1,6 @@
 # Formatted-paste fix — local 0.1.3 candidate
 
-Prepared and validated 2026-10-14. Intended GitHub preview: `v0.1.3-preview.1`; no tag, publication or AMO submission was made. The published Firefox and GitHub packages remain version 0.1.2.
+Prepared and validated 2026-10-14. Intended GitHub preview: `v0.1.3-preview.2`; Release publication and AMO submission were authorized after local validation. The first tag, `v0.1.3-preview.1`, failed hosted CI on an immediate selection assertion in the literal-paste fixture (87/88 passed); no release was published. That assertion and the matching rich-selection assertion now wait for asynchronous restoration. `v0.1.3-preview.2` is the replacement candidate; runtime files are unchanged.
 
 ## Reproduction and change
 

@@ -92,7 +92,7 @@ test('formatted draft: selection, undo of a separate edit and explicit retry pre
   await editor.press('Enter');
   await expect.poll(() => page.evaluate(() => fixture.submissions)).toBe(1);
   await expect.poll(() => page.evaluate(() => fixture.model)).toMatch(/^\[Local time:/);
-  expect(await editor.evaluate(() => document.getSelection().toString())).toBe('👋');
+  await expect.poll(() => editor.evaluate(() => document.getSelection().toString())).toBe('👋');
   expect(await page.evaluate(() => fixture.view.state.doc.toJSON().content.slice(2))).toEqual(before.doc.content);
   await editor.press('ControlOrMeta+z');
   await expect.poll(() => page.evaluate(() => fixture.view.state.doc.toJSON())).toEqual(before.doc);
@@ -382,7 +382,7 @@ test('ChatGPT literal-paste spans preserve multiline text, selection, undo and r
   expect(await sent(page)).toHaveLength(0);
   await expect.poll(() => page.evaluate(() => fixture.model)).toMatch(/^\[Local time:/);
   expect(unstamped(await page.evaluate(() => fixture.model))).toBe(draft);
-  expect(await editor.evaluate(() => document.getSelection().toString())).toBe('👋');
+  await expect.poll(() => editor.evaluate(() => document.getSelection().toString())).toBe('👋');
   await editor.press('ControlOrMeta+z');
   await expect.poll(() => page.evaluate(() => fixture.model)).toBe(draft);
   await page.clock.runFor(2000);
