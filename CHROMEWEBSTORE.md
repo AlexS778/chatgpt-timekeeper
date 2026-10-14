@@ -1,6 +1,6 @@
 # Chrome Web Store listing — ChatGPT Timekeeper
 
-Last updated: 2026-10-14. **Deferred by publisher; not submitted.** Current source/package version: 0.1.2. The dashboard's first-registration page requires the Developer Agreement and a $5 fee. The publisher chose Firefox-only preparation for now; no agreement accepted or fee paid by the agent.
+Last updated: 2026-10-14. **Deferred by publisher; not submitted.** Current source/package candidate: 0.1.3 (unreleased). The dashboard's first-registration page requires the Developer Agreement and a $5 fee. The publisher chose Firefox-only preparation for now; no agreement accepted or fee paid by the agent.
 
 ## Store listing
 
@@ -67,6 +67,7 @@ Homepage: `https://github.com/AlexS778/chatgpt-timekeeper`.
 
 | Version | Changes | Store status |
 | --- | --- | --- |
+| 0.1.3 | Formatted-paste support; rich body preservation and rollback safeguards | Local candidate; not submitted or published |
 | 0.1.2 | Desktop-only Firefox metadata; CI-gated GitHub preview ZIPs | GitHub preview; Chrome store deferred |
 | 0.1.1 | Readable timestamps, icons, popup links/version, offline privacy, security restrictions and updated Firefox disclosures | Draft |
 | 0.1.0 | Initial unsigned GitHub preview | Never submitted |

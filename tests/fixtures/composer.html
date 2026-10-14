@@ -21,7 +21,7 @@ import { EditorState, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { history, undo } from 'prosemirror-history';
 // Real framework state: submission never reads editor DOM directly.
-window.fixture = { model: '', messages: [], submissions: 0, inputs: 0, failedSend: false, enabled: true, listeners: [] };
+window.fixture = { model: '', messages: [], documents: [], submissions: 0, inputs: 0, failedSend: false, enabled: true, listeners: [] };
 window.browser = { storage: {
   local: { async get() { return { enabled: fixture.enabled }; }, async set(value) {
     fixture.enabled = value.enabled;
@@ -30,11 +30,28 @@ window.browser = { storage: {
   onChanged: { addListener(listener) { fixture.listeners.push(listener); }, removeListener() {} }
 } };
 const schema = new Schema({ nodes: {
-  doc: { content: 'paragraph+' },
+  doc: { content: 'block+' },
   paragraph: { content: 'inline*', group: 'block', parseDOM: [{ tag: 'p' }], toDOM: () => ['p', 0] },
+  heading: { content: 'inline*', group: 'block', attrs: { level: { default: 2 } },
+    parseDOM: [1, 2, 3].map(level => ({ tag: `h${level}`, attrs: { level } })),
+    toDOM: node => [`h${node.attrs.level}`, 0] },
+  code_block: { content: 'text*', group: 'block', code: true, defining: true, marks: '',
+    parseDOM: [{ tag: 'pre', preserveWhitespace: 'full' }], toDOM: () => ['pre', ['code', 0]] },
+  bullet_list: { content: 'list_item+', group: 'block', parseDOM: [{ tag: 'ul' }], toDOM: () => ['ul', 0] },
+  ordered_list: { content: 'list_item+', group: 'block', attrs: { start: { default: 1 } },
+    parseDOM: [{ tag: 'ol', getAttrs: node => ({ start: Number(node.getAttribute('start') || 1) }) }],
+    toDOM: node => ['ol', { start: node.attrs.start }, 0] },
+  list_item: { content: 'paragraph block*', parseDOM: [{ tag: 'li' }], toDOM: () => ['li', 0] },
+  blockquote: { content: 'block+', group: 'block', parseDOM: [{ tag: 'blockquote' }], toDOM: () => ['blockquote', 0] },
+  unknown_block: { content: 'text*', group: 'block', toDOM: () => ['section', 0] },
   text: { group: 'inline' },
   hard_break: { inline: true, group: 'inline', selectable: false, parseDOM: [{ tag: 'br' }], toDOM: () => ['br'] }
 }, marks: {
+  em: { parseDOM: [{ tag: 'em' }], toDOM: () => ['em', 0] },
+  code: { parseDOM: [{ tag: 'code' }], toDOM: () => ['code', 0] },
+  link: { attrs: { href: {} }, parseDOM: [{ tag: 'a[href]', getAttrs: node => ({ href: node.getAttribute('href') }) }],
+    toDOM: mark => ['span', { 'text-link-href': mark.attrs.href, 'rich-link-source-app-id': '', class: 'Mention' },
+      ['span', { class: 'Label' }, 0]] },
   strong: { parseDOM: [{ tag: 'strong' }], toDOM: () => ['strong', 0] },
   literal_paste: { parseDOM: [{ tag: 'span[data-prompt-literal-paste=""]' }],
     toDOM: () => ['span', { 'data-prompt-literal-paste': '' }, 0] }
@@ -70,6 +87,17 @@ fixture.bind = () => {
       view.dispatch(view.state.tr.replaceWith(0, view.state.doc.content.size, paragraph).setMeta('addToHistory', false));
       view.focus();
     };
+    fixture.setFormattedDraft = html => {
+      fixture.setDraft('');
+      view.pasteHTML(html);
+      view.dispatch(view.state.tr.setSelection(TextSelection.atEnd(view.state.doc)));
+      view.focus();
+    };
+    fixture.setUnknownDraft = text => {
+      const node = schema.node('unknown_block', null, schema.text(text));
+      view.dispatch(view.state.tr.replaceWith(0, view.state.doc.content.size, node).setMeta('addToHistory', false));
+      view.focus();
+    };
     fixture.setPastedDraft = text => {
       const paragraphs = text.split('\n').map(line => schema.node('paragraph', null,
         line ? schema.text(line, [schema.mark('literal_paste')]) : null));
@@ -93,7 +121,10 @@ fixture.bind = () => {
   form.addEventListener('submit', event => {
     event.preventDefault();
     fixture.submissions++;
-    if (!fixture.failedSend) fixture.messages.push(fixture.model);
+    if (!fixture.failedSend) {
+      fixture.messages.push(fixture.model);
+      fixture.documents.push(fixture.view?.state.doc.toJSON() ?? null);
+    }
   });
 };
 fixture.bind();

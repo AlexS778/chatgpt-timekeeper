@@ -1,4 +1,4 @@
-import { findComposer, snapshotEditor, editPrefix } from './chatgpt-adapter.js';
+import { findComposer, snapshotEditor, editPrefix, matchesStamp } from './chatgpt-adapter.js';
 import { planStamp } from './time.js';
 
 export function installInterceptor(window, isEnabled, clock = () => new Date()) {
@@ -33,6 +33,13 @@ export function installInterceptor(window, isEnabled, clock = () => new Date()) 
     if (!snapshot) return;
     const plan = planStamp(snapshot.text, clock());
     if (!plan) return;
+    if (snapshot.rich) {
+      const breaks = snapshot.prefixBlock ? snapshot.prefixBreaks : 2;
+      const line = plan.insert.slice(0, -1);
+      plan.remove = snapshot.prefixBlock ? snapshot.prefixBlock.textContent.length + breaks : 0;
+      plan.insert = line + '\n'.repeat(breaks);
+      plan.text = plan.insert + snapshot.text.slice(plan.remove);
+    }
     attempted.add(editor);
     window.setTimeout(() => attempted.delete(editor), 0);
     busy.add(editor);
@@ -45,13 +52,15 @@ export function installInterceptor(window, isEnabled, clock = () => new Date()) 
       // inside keyboard/accessible button activation. A task releases that guard.
       event.preventDefault();
       event.stopImmediatePropagation();
+      // A failed rollback leaves a draft for manual review, never a continuation.
+      if (restore.blocked) return;
       window.setTimeout(() => {
         try {
           try { restore(); } catch { /* Focus restoration must never cause a second send. */ }
           const current = findComposer(window.document);
           if (current?.editor !== editor || current.button.disabled ||
               current.button.getAttribute('aria-disabled') === 'true' ||
-              snapshotEditor(editor)?.text !== plan.text) return;
+              !matchesStamp(snapshotEditor(editor), snapshot, plan)) return;
           current.button.click();
         } finally { busy.delete(editor); }
       }, 0);

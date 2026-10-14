@@ -84,6 +84,7 @@ function createSettings(scope = globalThis) {
 }
 
 // src/chatgpt-adapter.js
+
 const editorCandidates = 'form .ProseMirror[contenteditable="true"][role="textbox"], form textarea#prompt-textarea, form textarea#mobile-composer-prompt';
 const sendCandidates = 'button[type="submit"][aria-label="Send"], button[data-testid="send-button"]';
 
@@ -102,10 +103,13 @@ function findComposer(document) {
   return { editor, form, button: buttons[0] };
 }
 
-// Accept observed plain paragraphs and literal-paste spans with text/native line breaks.
-// Unknown rich nodes fail closed.
-// points[i] is the DOM position corresponding to UTF-16 offset i in the draft.
 function snapshotEditor(editor) {
+  return snapshotPlainEditor(editor) ?? snapshotRichEditor(editor);
+}
+
+// The plain-text pathway keeps its existing native editing and undo behavior.
+// points[i] is the DOM position corresponding to UTF-16 offset i in the draft.
+function snapshotPlainEditor(editor) {
   if (editor.tagName === 'TEXTAREA') return { text: editor.value };
   const paragraphs = [...editor.childNodes];
   if (!paragraphs.length || paragraphs.some(node => node.nodeType !== 1 || node.tagName !== 'P')) return null;
@@ -154,6 +158,68 @@ function snapshotEditor(editor) {
   return { text, points, offset: (node, offset) => offsets.get(node)?.get(offset) };
 }
 
+const richBlocks = new Set(['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'UL', 'OL', 'PRE', 'BLOCKQUOTE']);
+
+function snapshotRichEditor(editor) {
+  const blocks = [...editor.childNodes];
+  if (!blocks.length) return null;
+  const first = blocks[0];
+  // A rich timestamp occupies its own unformatted paragraph.
+  const plainPrefix = first.tagName === 'P' &&
+    [...first.childNodes].every(node => node.nodeType === 3 ||
+      (node.tagName === 'BR' && node.classList.contains('ProseMirror-trailingBreak')));
+  const firstText = first.textContent;
+  const prefixBlock = plainPrefix && prefixLength(firstText + '\n') === firstText.length + 1 ? first : null;
+  const separator = prefixBlock && blocks[1]?.tagName === 'P' && !blocks[1].textContent &&
+    [...blocks[1].childNodes].every(node => node.tagName === 'BR') ? blocks[1] : null;
+  const body = blocks.slice(prefixBlock ? separator ? 2 : 1 : 0);
+  if (!body.length || body.some(node => node.nodeType !== 1 || !richBlocks.has(node.tagName))) return null;
+
+  // Read text only to decide whether there is a draft and bookmark selection.
+  // The body is opaque: preserving its complete markup also preserves links,
+  // marks, lists, code and ChatGPT's decorated inline-link nodes.
+  let text = '';
+  const points = [];
+  const offsets = new Map();
+  function record(node, offset, position = text.length) {
+    if (!offsets.has(node)) offsets.set(node, new Map());
+    offsets.get(node).set(offset, position);
+    points[position] = { node, offset };
+  }
+  function read(node) {
+    if (node.nodeType === 3) {
+      for (let index = 0; index <= node.data.length; index++) record(node, index, text.length + index);
+      text += node.data;
+      return;
+    }
+    record(node, 0);
+    if (node.tagName === 'BR' && !node.classList.contains('ProseMirror-trailingBreak')) text += '\n';
+    [...node.childNodes].forEach((child, index) => {
+      read(child);
+      record(node, index + 1);
+    });
+  }
+  blocks.forEach((block, index) => {
+    if (index) text += '\n';
+    record(editor, index);
+    if (block === separator) record(block, 0);
+    else read(block);
+  });
+  record(editor, blocks.length);
+  // An older prefix embedded in a formatted block cannot safely be replaced by
+  // the separate-paragraph pathway. Leave that draft unchanged rather than stack.
+  if (!prefixBlock && prefixLength(text)) return null;
+  return { rich: true, text, points, prefixBlock, prefixBreaks: separator ? 2 : 1,
+    bodyHTML: body.map(node => node.outerHTML).join(''),
+    offset: (node, offset) => offsets.get(node)?.get(offset) };
+}
+
+function matchesStamp(after, before, plan) {
+  return after?.text === plan.text && (before.rich
+    ? after.rich && after.prefixBlock && after.bodyHTML === before.bodyHTML
+    : !after.rich);
+}
+
 function editPrefix(editor, snapshot, plan) {
   const document = editor.ownerDocument;
   const previousFocus = document.activeElement;
@@ -169,6 +235,20 @@ function editPrefix(editor, snapshot, plan) {
   }
   let nativeInput = false;
   let completed = false;
+  let edits = 0;
+  const currentValue = () => textarea ? editor.value : editor.innerHTML;
+  const originalValue = currentValue();
+  function command(name, value) {
+    const before = currentValue();
+    try { return document.execCommand(name, false, value); }
+    finally { if (currentValue() !== before) edits++; }
+  }
+  function rollback() {
+    for (let index = 0; index < edits && currentValue() !== originalValue; index++) {
+      document.execCommand('undo');
+    }
+    return currentValue() === originalValue;
+  }
   const observe = event => { nativeInput ||= event.isTrusted; };
   const shift = index => index < plan.remove ? plan.insert.length : index + plan.insert.length - plan.remove;
   function restoreSelection(after, changed) {
@@ -184,7 +264,19 @@ function editPrefix(editor, snapshot, plan) {
   try {
     editor.focus({ preventScroll: true });
     if (textarea) editor.setSelectionRange(0, plan.remove);
-    else {
+    else if (snapshot.rich) {
+      const range = document.createRange();
+      if (snapshot.prefixBlock) {
+        range.selectNodeContents(snapshot.prefixBlock);
+      } else {
+        // Insert outside the original blocks so the timestamp inherits no
+        // heading, code, bold or link formatting. Never rewrite the rich body.
+        range.setStart(editor, 0);
+        range.collapse(true);
+      }
+      selection.removeAllRanges();
+      selection.addRange(range);
+    } else {
       const start = snapshot.points[0], end = snapshot.points[plan.remove];
       if (!start || !end) return false;
       const range = document.createRange();
@@ -194,9 +286,20 @@ function editPrefix(editor, snapshot, plan) {
       selection.addRange(range);
     }
     editor.addEventListener('input', observe);
-    const accepted = document.execCommand('insertText', false, plan.insert);
+    const standalone = snapshot.rich && !snapshot.prefixBlock;
+    const timestamp = plan.insert.trimEnd();
+    let accepted = true;
+    if (standalone) {
+      // Two paragraphs force a block boundary in Chromium rather than inherit
+      // the first link's marks. The empty paragraph is the visible blank line.
+      const escape = text => text.replace(/[&<>]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[character]);
+      const prefixHTML = `<p>${escape(timestamp)}</p><p></p>`;
+      accepted = command('insertHTML', prefixHTML);
+    } else {
+      accepted = command('insertText', snapshot.rich ? timestamp : plan.insert);
+    }
     const after = snapshotEditor(editor);
-    if (accepted && nativeInput && after?.text === plan.text) {
+    if (accepted && nativeInput && matchesStamp(after, snapshot, plan)) {
       completed = true;
       // Keep focus in the editor until its mutation observer reconciles the edit.
       // Restoring focus synchronously can make ProseMirror postpone that reconciliation.
@@ -206,16 +309,14 @@ function editPrefix(editor, snapshot, plan) {
       };
     }
     // Undo only a command that actually changed this draft. Never set DOM/value directly.
-    if (after?.text !== snapshot.text) document.execCommand('undo');
+    const reverted = rollback();
     restoreSelection(snapshotEditor(editor), false);
-    return false;
+    return reverted ? false : { blocked: true };
   } catch {
-    const after = snapshotEditor(editor);
-    if (after?.text !== snapshot.text) {
-      try { document.execCommand('undo'); } catch { /* No synthetic second send. */ }
-    }
+    let reverted = false;
+    try { reverted = rollback(); } catch { /* Retain an uncertain draft for manual review. */ }
     restoreSelection(snapshotEditor(editor), false);
-    return false;
+    return reverted ? false : { blocked: true };
   } finally {
     editor.removeEventListener('input', observe);
     if (!completed && previousFocus?.isConnected && previousFocus !== editor) previousFocus.focus({ preventScroll: true });
@@ -256,6 +357,13 @@ function installInterceptor(window, isEnabled, clock = () => new Date()) {
     if (!snapshot) return;
     const plan = planStamp(snapshot.text, clock());
     if (!plan) return;
+    if (snapshot.rich) {
+      const breaks = snapshot.prefixBlock ? snapshot.prefixBreaks : 2;
+      const line = plan.insert.slice(0, -1);
+      plan.remove = snapshot.prefixBlock ? snapshot.prefixBlock.textContent.length + breaks : 0;
+      plan.insert = line + '\n'.repeat(breaks);
+      plan.text = plan.insert + snapshot.text.slice(plan.remove);
+    }
     attempted.add(editor);
     window.setTimeout(() => attempted.delete(editor), 0);
     busy.add(editor);
@@ -268,13 +376,15 @@ function installInterceptor(window, isEnabled, clock = () => new Date()) {
       // inside keyboard/accessible button activation. A task releases that guard.
       event.preventDefault();
       event.stopImmediatePropagation();
+      // A failed rollback leaves a draft for manual review, never a continuation.
+      if (restore.blocked) return;
       window.setTimeout(() => {
         try {
           try { restore(); } catch { /* Focus restoration must never cause a second send. */ }
           const current = findComposer(window.document);
           if (current?.editor !== editor || current.button.disabled ||
               current.button.getAttribute('aria-disabled') === 'true' ||
-              snapshotEditor(editor)?.text !== plan.text) return;
+              !matchesStamp(snapshotEditor(editor), snapshot, plan)) return;
           current.button.click();
         } finally { busy.delete(editor); }
       }, 0);

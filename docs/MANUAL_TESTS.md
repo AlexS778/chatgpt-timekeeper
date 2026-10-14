@@ -10,6 +10,8 @@ Use a new temporary ChatGPT chat with no personal content. Record browser/versio
 | Enter | `Timekeeper extension test (Enter). Echo my first line.` | One message, one prefix |
 | Shift+Enter | Type `Line one`, Shift+Enter, `Line two` | No prefix until Send/Enter; both lines preserved |
 | Unicode/paste | Paste `Привет 👋` and several lines of text | Characters and line order preserved |
+| Rich paste | Paste the Add Two Numbers sample with bold text, links, lists and inline code; test pointer Send and Enter | One plain timestamp, original text/formatting retained, one submission; native prefix edit must leave body markup unchanged |
+| Leading code block | Paste or type an actual formatted code block as the entire draft | Timestamp outside the code block; code text, whitespace and code-block formatting retained |
 | Code fences | Paste a fenced block with `<`, `>`, quotes and blank lines | Plain message content preserved, or unsupported rich editor left unchanged |
 | Undo/selection | Keep a draft after a prevented send; undo once | Original draft returns; caret/selected text follows the same original text |
 | Failed send/retry | In an approved local fixture prevent the first send, advance clock, retry | Fresh prefix, no stacked prefix, no automatic retry |
