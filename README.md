@@ -2,6 +2,10 @@
 
 **Give ChatGPT a little context about when you're writing.**
 
+**[Install for Firefox from Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/chatgpt-timekeeper/)** — experimental desktop version **0.1.2**. Install it, reload your ChatGPT tab, and send a message as usual.
+
+**[Download the Chrome ZIP](https://github.com/AlexS778/chatgpt-timekeeper/releases/download/v0.1.2-preview.1/chatgpt-timekeeper-v0.1.2-preview.1-chromium.zip)** — preview version **0.1.2**. [All releases](https://github.com/AlexS778/chatgpt-timekeeper/releases) · [Installation steps](#install-in-chrome). No Node.js or npm needed.
+
 Timekeeper adds your local date and time to each message you send on [chatgpt.com](https://chatgpt.com). Handy for planning your day, keeping a journal, or talking about “today” and “tomorrow”.
 
 ![ChatGPT Timekeeper adding a readable local timestamp to a message](docs/images/timekeeper-in-action.png)
@@ -21,25 +25,18 @@ The time comes from your computer. The GMT offset tells ChatGPT which local time
 
 No account with us, no ads, no analytics. Your message and timestamp go to ChatGPT when you send; the extension keeps no chat history. [Privacy policy](PRIVACY.md).
 
-## Try it
+## Install in Chrome
 
-This is an early preview for desktop **Chrome and Firefox**. It isn't in the extension stores yet.
+1. [Download the Chrome ZIP](https://github.com/AlexS778/chatgpt-timekeeper/releases/download/v0.1.2-preview.1/chatgpt-timekeeper-v0.1.2-preview.1-chromium.zip) and extract it into a folder you will keep.
+2. Open `chrome://extensions` in Chrome and turn on **Developer mode**.
+3. Click **Load unpacked** and select the extracted folder containing `manifest.json`.
+4. Reload your ChatGPT tab, pin Timekeeper if you like, and send a message as usual.
 
-To try the current source, download or clone this revision, install [Node.js](https://nodejs.org/) 22 or later, then run this in the project folder:
+Choose the **chromium.zip** asset from [our releases](https://github.com/AlexS778/chatgpt-timekeeper/releases), rather than the Source code archives. Keep the extracted folder; Chrome loads the extension from it. To update, replace its contents with a newer release and reload the extension and ChatGPT. [Chrome's loading instructions](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-an-unpacked-extension).
 
-```sh
-npm run package
-```
+Chrome Web Store publication is deferred. Developer build instructions are in the technical details below.
 
-**Chrome:** open `chrome://extensions`, turn on Developer mode, choose **Load unpacked**, and select `dist/chromium`.
-
-**Firefox:** open `about:debugging#/runtime/this-firefox`, choose **Load Temporary Add-on…**, and select `dist/firefox/manifest.json`. You'll need to load it again after restarting Firefox.
-
-Reload your ChatGPT tab, pin the extension if you like, and send a message. The popup shows a time preview and the on/off switch.
-
-You can also download the [published preview](https://github.com/AlexS778/chatgpt-timekeeper/releases/tag/v0.1.0-preview.2). That older version uses the longer timestamp format; the shorter format shown here is in the unreleased 0.1.2 source.
-
-**A couple of things to know:** stop dictation before sending. This preview works with ordinary text messages, and ChatGPT interface changes may affect it. Safari, mobile browsers and native apps aren't supported. More testing is still needed before a regular store release.
+**A couple of things to know:** stop dictation before sending. This preview works with ordinary text messages, and ChatGPT interface changes may affect it. Safari, mobile browsers and native apps aren't supported. Broader real-site acceptance testing remains incomplete.
 
 [Report a problem](https://github.com/AlexS778/chatgpt-timekeeper/issues) · [Source](https://github.com/AlexS778/chatgpt-timekeeper) · [MIT license](LICENSE)
 
@@ -56,9 +53,9 @@ The readable-format change passed 21 unit/source checks and 64 Firefox/Chromium 
 
 ## Preview release
 
-The published preview is tagged **`v0.1.0-preview.2`**; its WebExtension manifest and package use numeric version **`0.1.0`**. Release notes: [docs/releases/v0.1.0-preview.2.md](docs/releases/v0.1.0-preview.2.md). This project is independent and is not affiliated with or endorsed by OpenAI.
+The current GitHub preview is tagged **`v0.1.2-preview.1`**; its WebExtension manifest and package use numeric version **`0.1.2`**. Release notes: [docs/releases/v0.1.2-preview.1.md](docs/releases/v0.1.2-preview.1.md). This project is independent and is not affiliated with or endorsed by OpenAI.
 
-The unsigned Chromium and Firefox ZIPs contain the extension files with `manifest.json` at the archive root. Extract the matching ZIP into its own directory, then load that directory using the browser instructions below (Firefox selects its `manifest.json`). They are local testing packages, not signed store installs. The current source prepares the **unreleased 0.1.2** store-readiness candidate (`v0.1.2-preview.1`); the published 0.1.0 ZIPs are unchanged. To reproduce the published assets, check out `v0.1.0-preview.2` first. To build the current candidate, run `npm run release` with Node 22+ and Python 3.9+; output and SHA-256 checksums are in `dist/release/`. [Release preparation](docs/RELEASING.md) explains verification and publication.
+The unsigned Chromium and Firefox ZIPs contain the extension files with `manifest.json` at the archive root. Extract the matching ZIP into its own directory, then load that directory using the browser instructions below (Firefox selects its `manifest.json`). They are local testing packages, not signed store installs. Firefox **0.1.2** is now published on Mozilla Add-ons; the GitHub preview `v0.1.2-preview.1` supplies ready-to-load unsigned ZIPs. The published GitHub 0.1.0 ZIPs are unchanged. To reproduce those older assets, check out `v0.1.0-preview.2` first. To build the current source, run `npm run release` with Node 22+ and Python 3.9+; output and SHA-256 checksums are in `dist/release/`. [Release preparation](docs/RELEASING.md) explains verification and publication.
 
 ### Known limitations
 
@@ -66,9 +63,9 @@ The unsigned Chromium and Firefox ZIPs contain the extension files with `manifes
 - **Production acceptance is incomplete.** Real-site IME, attachment-only, long-draft, failure/retry and undo checks remain pending across the claimed browsers; fixture coverage does not establish real-site acceptance.
 - **ChatGPT page changes can break stamping.** Unknown rich structures, ambiguous composers and unrecognized/localized Send labels are skipped. The native editing API is deprecated and browser-dependent. A changed draft before continuation remains for manual review/send; there are no automatic retries.
 - **Core compatibility evidence is dated 2026-10-10, with limited exact-package Firefox checks on 2026-10-11.** Chrome and Firefox versions and exact test scope are recorded below and in the feasibility log. Edge, Brave and Opera are untested. Safari packaging, mobile browsers and native apps are outside this preview. Firefox's generated minimum version is packaging metadata, not evidence that Firefox 140 was tested.
-- **No signed browser-store distribution.** Firefox temporary loading ends on restart; the permanent extension ID is registered and version 0.1.2 is awaiting AMO review/signing. The device clock determines the timestamp and may be inaccurate.
+- **Signed installation consent remains unverified.** Firefox 0.1.2 is publicly distributed through Mozilla Add-ons; temporary development loading still ends on restart. The device clock determines the timestamp and may be inaccurate.
 
-Firefox 0.1.2 was submitted to Mozilla on 2026-10-11 as an experimental desktop add-on and is **awaiting review**. It is not yet publicly available; see [the submission record](docs/FIREFOX_SUBMISSION.md). Chrome store publication is deferred.
+Firefox 0.1.2 was submitted to Mozilla on 2026-10-11 as an experimental desktop add-on and was verified **publicly available on 2026-10-14**. The downloaded XPI matches the submitted shipping files and includes Mozilla signature files; see [the submission record](docs/FIREFOX_SUBMISSION.md). Chrome store publication is deferred.
 
 ## Install for Firefox testing
 
@@ -78,7 +75,7 @@ Firefox 0.1.2 was submitted to Mozilla on 2026-10-11 as an experimental desktop 
 4. Reload the ChatGPT test tab. Open the extension popup to check the toggle.
 5. Use a fresh temporary chat and the harmless prompts in [docs/MANUAL_TESTS.md](docs/MANUAL_TESTS.md).
 
-Temporary add-ons disappear when Firefox restarts. Regular distribution requires Mozilla signing; this project does not contain a signed XPI. Firefox packaging adds an extension ID and required data disclosures for chat text (`personalCommunications`) and the broad time-zone information suggested by the GMT offset (`locationInfo`). The extension sends through ChatGPT's normal flow and has no developer collection; see [the privacy policy](PRIVACY.md). Firefox 142 is a conservative schema/tooling minimum, not a claim of tested compatibility; desktop consent itself begins at 140. The package omits `gecko_android` for desktop-only distribution. See [Mozilla's manifest documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings). The permanent ID was selected before signing; AMO registration/signing status is recorded in [the submission log](docs/FIREFOX_SUBMISSION.md).
+Temporary add-ons disappear when Firefox restarts. For a permanent installation, use the [Mozilla Add-ons listing](https://addons.mozilla.org/en-US/firefox/addon/chatgpt-timekeeper/). Locally generated ZIPs are unsigned development packages. Firefox packaging adds an extension ID and required data disclosures for chat text (`personalCommunications`) and the broad time-zone information suggested by the GMT offset (`locationInfo`). The extension sends through ChatGPT's normal flow and has no developer collection; see [the privacy policy](PRIVACY.md). Firefox 142 is a conservative schema/tooling minimum, not a claim of tested compatibility; desktop consent itself begins at 140. The package omits `gecko_android` for desktop-only distribution. See [Mozilla's manifest documentation](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings). The permanent ID was selected before signing; AMO registration/signing status is recorded in [the submission log](docs/FIREFOX_SUBMISSION.md).
 
 ## Install for Chrome testing
 
@@ -100,7 +97,7 @@ The popup has one persisted on/off setting (on by default) and a clock preview t
 
 **The timestamp is visible in the message and is sent to ChatGPT through the site's usual send flow.** The extension makes no network requests and saves only `enabled` in local extension storage. It has only the `storage` permission and a declarative content script limited to `https://chatgpt.com/*`. There is no background worker, analytics, prompt storage, clipboard access, history reader, or remote dependency.
 
-The [privacy policy](PRIVACY.md) explains temporary draft handling, local preferences, user-directed ChatGPT submission, and support links. [STORE.md](STORE.md) and [CHROMEWEBSTORE.md](CHROMEWEBSTORE.md) contain draft listing copy, disclosure justifications, reviewer steps and remaining submission requirements. Store readiness is work in progress; no store submission has been made.
+The [privacy policy](PRIVACY.md) explains temporary draft handling, local preferences, user-directed ChatGPT submission, and support links. [STORE.md](STORE.md) and [CHROMEWEBSTORE.md](CHROMEWEBSTORE.md) contain draft listing copy, disclosure justifications, reviewer steps and remaining submission requirements. Firefox 0.1.2 is publicly available on Mozilla Add-ons; Chrome submission remains deferred.
 
 **Current sending integration (2026-10-10):** The extension uses ChatGPT's HTML/DOM controls as its integration surface for sending messages. It identifies the composer and related Send button by CSS selectors and element attributes, inserts the timestamp through the browser's native editing pathway, then invokes the normal Send button once so ChatGPT's own JavaScript handles submission. It does not call or reverse-engineer ChatGPT's private backend API. These page controls are not a documented, stable public API: changes to their markup, labels, or editor behavior can break compatibility. Unrecognized controls are skipped, and compatibility requires testing against the current ChatGPT page and browser; there is no permanent compatibility guarantee. See [the dated observations and validation status](docs/FEASIBILITY.md).
 
@@ -131,8 +128,8 @@ CFFIXED_USER_HOME=/private/tmp/timekeeper-firefox-home npm run test:browser
 
 `src/` contains the reviewable modules. `npm run build` deterministically concatenates them into the checked-in isolated `content.js`; `npm run check:build` detects stale output. The popup uses local ES modules directly. Package directories contain only the shipping scripts, popup, offline privacy page, PNG icons, manifest, and license; `npm run verify:package` checks their file list and source equality. `npm run package` replaces the generated `dist/chromium/` and `dist/firefox/` directories. `SYSTEM_DESIGN.md` remains the original specification, not a statement of completed acceptance.
 
-GitHub Actions runs unit/source checks on Node 22 and 24, plus Chromium/Firefox fixtures, package verification, Mozilla validation with warnings treated as errors, and repeat-build archive checks on Ubuntu. Actions are pinned to reviewed commits and CI has read-only repository permissions; it uploads test packages but does not publish GitHub releases. Hosted CI checks are available in the repository’s [Actions page](https://github.com/AlexS778/chatgpt-timekeeper/actions). See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and privacy-safe bug reports.
+GitHub Actions runs unit/source checks on Node 22 and 24, plus Chromium/Firefox fixtures, package verification, Mozilla validation with warnings treated as errors, and repeat-build archive checks on Ubuntu. Actions are pinned to reviewed commits. Test jobs have read-only repository permissions; a release job runs only for pushed preview tags after all checks pass, verifies the tested packages, and publishes the ZIPs and checksums to GitHub Releases. Hosted CI checks are available in the repository’s [Actions page](https://github.com/AlexS778/chatgpt-timekeeper/actions). See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and privacy-safe bug reports.
 
-MIT licensed. No Safari wrapper or store publication is included.
+MIT licensed. Firefox store distribution is available; no Safari wrapper is included.
 
 </details>

@@ -1,6 +1,6 @@
 # Store metadata
 
-Last updated: 2026-10-11. **Firefox 0.1.2 submitted; awaiting review.** See [the submission log](docs/FIREFOX_SUBMISSION.md). Chrome is deferred by the publisher because of its registration fee. Current candidate: extension version `0.1.2`, intended future GitHub preview `v0.1.2-preview.1` (not created). The published `v0.1.0-preview.2` remains unchanged.
+Last updated: 2026-10-14. **Firefox 0.1.2 publicly available on [Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/chatgpt-timekeeper/).** See [the submission log](docs/FIREFOX_SUBMISSION.md). Chrome is deferred by the publisher because of its registration fee. Current Firefox store release: extension version `0.1.2`, GitHub preview `v0.1.2-preview.1` with ready-to-load browser ZIPs. The published `v0.1.0-preview.2` remains unchanged.
 
 ## Listing
 
@@ -45,6 +45,8 @@ No sale, unrelated use or credit/lending use. No extension-initiated network req
 
 ## Chrome Web Store
 
+Store submission remains deferred. Chrome users can download the **0.1.2** Chromium ZIP from [GitHub Releases](https://github.com/AlexS778/chatgpt-timekeeper/releases/tag/v0.1.2-preview.1), extract it, and load it through Developer mode. No user build step is required; [README instructions](README.md#install-in-chrome).
+
 ### Single purpose
 
 Add the user's browser-local timestamp to text they choose to send on chatgpt.com.
@@ -65,13 +67,13 @@ Generated Firefox manifest uses `required: ["personalCommunications", "locationI
 
 Minimum `142.0` keeps the built-in consent declaration valid in Mozilla's cross-platform schema checker; it is not a tested compatibility claim. Desktop consent itself begins at 140, but the linter inherits the desktop minimum for its Android schema check when `gecko_android` is absent. **Omit `gecko_android` for desktop-only distribution; do not advertise Android support.** AMO's upload UI forced the Android checkbox on when the earlier candidate included that key, so it was removed before submission. Actual installed-browser evidence remains Firefox 157.0.1 and Chrome 153.0.8010.36. The previous preview's `none` declaration must not be reused for this candidate. Confirm categorization with AMO review; do not weaken disclosures just to remove a prompt.
 
-The publisher selected permanent ID `chatgpt-timekeeper@alexs778.github.io` on 2026-10-11, replacing the unsigned preview's provisional `chatgpt-timekeeper@extensions.local`. It is an identifier, not a support mailbox. AMO has reserved this ID for the publisher’s incomplete draft. Once signed, preserve the registered ID on updates.
+The publisher selected permanent ID `chatgpt-timekeeper@alexs778.github.io` on 2026-10-11, replacing the unsigned preview's provisional `chatgpt-timekeeper@extensions.local`. It is an identifier, not a support mailbox. AMO publicly distributes version 0.1.2 under this ID. Preserve the registered ID on updates.
 
 Support email: `probe-mumble7g@icloud.com` (publisher supplied, monitored). Support website: `https://github.com/AlexS778/chatgpt-timekeeper/issues`. Homepage: `https://github.com/AlexS778/chatgpt-timekeeper`. License: MIT. Mark **experimental** and select **desktop Firefox only**, all desktop operating systems; exclude Android.
 
 Listing screenshot: `docs/images/store/timekeeper-screenshot.png` (1280×800), composed from the two unchanged real Firefox captures. Caption: “A real ChatGPT message with a local timestamp, alongside the Timekeeper on/off popup. Desktop preview, version 0.1.1.” See `docs/images/store/README.md` for provenance. The small Chrome promo tile is prepared but Chrome submission is deferred.
 
-Account access: signed-in Developer Hub observed on 2026-10-11 with “Submit Your First Add-on”; entering submission requires Mozilla account confirmation/two-step authentication setup. The publisher must complete credential setup privately. No agreement accepted by the agent and no package uploaded.
+Account access: the publisher completed Mozilla account confirmation/two-step authentication setup privately. Desktop-only version 0.1.2 and its source were submitted on 2026-10-11; public distribution was verified on 2026-10-14. See [the submission log](docs/FIREFOX_SUBMISSION.md).
 
 ### Reviewer notes
 
@@ -89,7 +91,7 @@ Source build: Node 22+ and Python 3.9+; local validation used Node 22.21.1, npm 
 
 ### Release notes
 
-Candidate 0.1.1 adds a readable date/time and GMT offset, original clock icons, source/support/privacy links and version in the popup, offline privacy information, explicit extension-page security restrictions and updated Firefox transmission disclosures. The sending mechanism and active-dictation support are unchanged.
+Version 0.1.2 includes a readable date/time and GMT offset, original clock icons, source/support/privacy links and version in the popup, offline privacy information, explicit extension-page security restrictions and updated Firefox transmission disclosures. Version 0.1.2 also corrects desktop-only distribution metadata. The sending mechanism and active-dictation support are unchanged.
 
 ## Submission gate
 
@@ -104,12 +106,13 @@ Candidate 0.1.1 adds a readable date/time and GMT offset, original clock icons, 
 - [ ] Match Chrome dashboard declarations to the handling table and Firefox declaration; confirm any reviewer categorization questions.
 - [x] Obtain Firefox submission authorization from the publisher; Chrome is deferred.
 - [x] Complete Mozilla account gates and submit Firefox with source and listing media; record actual submission outcome.
-- [ ] Await signing/review/publication and verify signed installation consent. Local validation is not store approval.
+- [x] Verify public Firefox 0.1.2 distribution and downloaded XPI contents on 2026-10-14; Mozilla signature files are present. See the submission log for artifact identity.
+- [ ] Verify signed installation consent with an actual store installation.
 
 ## Version history
 
 - 0.1.1: uploaded as an incomplete AMO draft; cancellation authorized by the publisher because its manifest incorrectly enabled Android distribution. No public release or approval.
-- 0.1.2: desktop-only replacement submitted to AMO on 2026-10-11; awaiting review. Intended preview tag uncreated. Runtime sending behavior unchanged.
+- 0.1.2: desktop-only replacement submitted to AMO on 2026-10-11; public experimental release verified on 2026-10-14. GitHub preview `v0.1.2-preview.1` provides unsigned Chrome/Firefox ZIPs through CI-gated release publication. Runtime sending behavior unchanged.
 - 0.1.0: unsigned GitHub preview `v0.1.0-preview.2`; no store submission or rejection history.
 
 ## References

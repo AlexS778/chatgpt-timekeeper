@@ -64,3 +64,55 @@ jobs:
           path: dist/release/
           if-no-files-found: error
           retention-days: 14
+
+  release:
+    # Only a deliberately pushed preview tag can publish; branch/PR CI stays read-only.
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: [unit, browser-and-package]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '22'
+      - name: Validate release tag and notes
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync, accessSync } from 'node:fs';
+          const { previewTag } = JSON.parse(readFileSync('package.json', 'utf8'));
+          if (process.env.GITHUB_REF_NAME !== previewTag) {
+            throw new Error('Release tag must match package.json previewTag');
+          }
+          accessSync(`docs/releases/${previewTag}.md`);
+          JS
+      - name: Rebuild and compare tested CI packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          npm run check:build
+          npm run release
+          gh run download "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY" \
+            --name unsigned-preview-packages --dir "$RUNNER_TEMP/timekeeper-ci-packages"
+          cmp dist/release/SHA256SUMS "$RUNNER_TEMP/timekeeper-ci-packages/SHA256SUMS"
+          for archive in dist/release/*.zip; do
+            cmp "$archive" "$RUNNER_TEMP/timekeeper-ci-packages/$(basename "$archive")"
+          done
+          (cd dist/release && sha256sum -c SHA256SUMS)
+      - name: Publish GitHub preview with tested ZIPs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" \
+            --verify-tag --draft --prerelease \
+            --title "ChatGPT Timekeeper $GITHUB_REF_NAME" \
+            --notes-file "docs/releases/$GITHUB_REF_NAME.md" \
+            "dist/release/chatgpt-timekeeper-$GITHUB_REF_NAME-chromium.zip" \
+            "dist/release/chatgpt-timekeeper-$GITHUB_REF_NAME-firefox.zip" \
+            dist/release/SHA256SUMS
+          gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false

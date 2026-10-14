@@ -1,6 +1,6 @@
 # Preview release preparation
 
-The published release is `v0.1.0-preview.2` (numeric extension version `0.1.0`); reproduce it from that tag. Current source is the **unreleased** `0.1.2` candidate, with `package.json` setting `previewTag` to `v0.1.2-preview.1`. The release script checks this identifier against the numeric version. Change the identifier and notes deliberately for later previews; never move an already published tag.
+The current GitHub preview release is `v0.1.2-preview.1` (numeric extension version `0.1.2`); reproduce it from that tag. The older `v0.1.0-preview.2` release remains unchanged. Firefox `0.1.2` is publicly available on [Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/chatgpt-timekeeper/), verified on 2026-10-14; its submitted source is commit `a3465ce079dca52dc451da4efc53396d3e79a752` (see [artifact verification](FIREFOX_SUBMISSION.md#public-release-verification--2026-10-14)). The GitHub preview adds documentation and release automation; its runtime files match the Firefox submission. Current source builds numeric version `0.1.2`, with `package.json` setting `previewTag` to `v0.1.2-preview.1`. The release script checks this identifier against the numeric version. Change the identifier and notes deliberately for later previews; never move an already published tag.
 
 ## Local checks
 
@@ -33,13 +33,13 @@ On Linux use `sha256sum -c SHA256SUMS`. ZIPs have `manifest.json` at their root.
 
 Review the MIT license, source, documentation links, dependency lockfile, ignored files and [publication review](PUBLICATION_REVIEW.md). Keep limitations in README and release notes aligned with TODO and feasibility evidence. `SYSTEM_DESIGN.md` is the original proposal, not completed acceptance. Source includes historical console probes as documented evidence; those probes are not part of shipping assets and must not be used as the production adapter.
 
-After checks pass, review and commit source, prepare matching release notes, then create an annotated tag using the candidate identifier in `package.json`. Check the clean worktree, tag target and generated checksums. Building packages does not create a tag or publish a release. GitHub Actions has read-only permissions and does not create releases or push tags.
+After checks pass, review and commit source, prepare matching release notes, then create an annotated tag using the candidate identifier in `package.json`. Check the clean worktree, tag target and generated checksums. Building packages does not create a tag or publish a release. GitHub Actions test jobs have read-only permissions. A preview-tag push runs the release job only after both unit-test matrix jobs and the browser/package job pass. It validates the tag against `previewTag`, checks release notes exist, rebuilds without installing dependencies, compares both ZIPs and checksums with the tested CI artifact, then creates a draft GitHub prerelease with those three assets and makes it public. Only that tag-gated job has `contents: write`; Actions never pushes tags.
 
 ## Publication boundary
 
 The user approved the public destination `AlexS778/chatgpt-timekeeper`. For future publication to another destination, obtain its explicit approval first. Review existing remote state before pushing; do not overwrite an existing repository or release. Use a new reviewed tag and matching release notes (the published [preview .2 notes](releases/v0.1.0-preview.2.md) are historical), mark the GitHub release **prerelease**, and attach only the two versioned ZIPs and `SHA256SUMS`.
 
-Wait for the first hosted CI run to pass before making the prerelease visible. Compare CI artifact checksums with local assets. If a check fails, resolve it in a new reviewed commit before publication; do not claim that local passes prove hosted CI passed. Signed stores, Firefox ID registration, Safari packaging and production readiness require separate acceptance work.
+For publication, push the reviewed main commit, then its new annotated preview tag. The tag-triggered CI run publishes the prerelease automatically after the checks above pass. Observe the actual run and verify the public release assets against local checksums. If a check fails before publication, resolve it in a new reviewed commit and use a new preview tag; do not claim that local passes prove hosted CI passed. Firefox store distribution and permanent ID registration are recorded in [FIREFOX_SUBMISSION.md](FIREFOX_SUBMISSION.md). Signed installation consent, other stores, Safari packaging and production readiness require separate acceptance work.
 
 ## Store submission
 

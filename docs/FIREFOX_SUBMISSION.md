@@ -1,4 +1,6 @@
-# Firefox submission preparation
+# Firefox submission and release record
+
+Public Firefox release **0.1.2** verified on **2026-10-14**: [Mozilla Add-ons listing](https://addons.mozilla.org/en-US/firefox/addon/chatgpt-timekeeper/). Signed installation consent remains untested.
 
 Prepared 2026-10-11. Candidate version **0.1.2**, permanent Firefox ID **`chatgpt-timekeeper@alexs778.github.io`**, selected by the publisher before first signing. Monitored listing contact: **`probe-mumble7g@icloud.com`**. Runtime remains small and dependency-free. No sending-module changes; `content.js` SHA-256 remains `292c3147a1a3898865d894db88f081fca7e700f7912b61ef1bb5e150d387c92b`.
 
@@ -41,3 +43,16 @@ The submitted source ZIP was freshly archived from the exact candidate commit an
 - Reviewer notes disclose required personalCommunications/locationInfo, no developer collection, preview limitations, exact build instructions, free ChatGPT-account requirement and lack of supplied reviewer credentials. Category interpretation remains subject to review.
 - Listing media: original clock icon and 1280×800 real-screenshot composition uploaded and saved; visually verified in the product editor. Caption identifies the actual 0.1.1 captures and explains that 0.1.2 changes only desktop distribution metadata. No approval is inferred from media upload.
 - Version editor: https://addons.mozilla.org/en-US/developers/addon/chatgpt-timekeeper/versions/6565272
+
+## Public release verification — 2026-10-14
+
+The publisher reported the Mozilla store release. Mozilla's [public add-on API](https://addons.mozilla.org/api/v5/addons/addon/chatgpt-timekeeper/) independently returned add-on **3092211**, status **public**, current version **0.1.2**, experimental **true**, disabled **false**, and file **5109410** with status **public**. Its last-updated field is `2026-10-14T16:10:26Z` (19:10:26 Europe/Moscow); this is listing metadata, not a separately established review-decision time.
+
+Downloaded the [public XPI](https://addons.mozilla.org/firefox/downloads/file/5109410/chatgpt_timekeeper-0.1.2.xpi) without authentication:
+
+- SHA-256: `f15548f1d54c78ca9a43477dcc6fc92522c85c0b665d186e79cf32874c6f456b`, matching Mozilla's API hash. Size: 23,898 bytes.
+- ZIP CRC check passed. Manifest version, permanent ID, desktop-only minimum 142.0 and required `personalCommunications` / `locationInfo` declarations match the submitted Firefox manifest.
+- All other shipping files match submitted source commit `a3465ce079dca52dc451da4efc53396d3e79a752` byte for byte.
+- Mozilla signature files are present: `META-INF/cose.manifest`, `cose.sig`, `manifest.mf`, `mozilla.sf`, and `mozilla.rsa`. Their cryptographic verification and a real store installation/consent check were not performed in this run.
+
+Public distribution is verified. The experimental status and existing compatibility limitations remain; publication does not complete the real-site acceptance matrix. Chrome remains deferred. No GitHub tag or release was created by this verification, and the historical submission record above remains unchanged.
