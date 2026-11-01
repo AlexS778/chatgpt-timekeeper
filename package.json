@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.64.0",
-    "addons-linter": "10.14.0",
+    "addons-linter": "10.15.0",
     "prosemirror-history": "1.5.1",
     "prosemirror-model": "1.25.12",
     "prosemirror-state": "1.4.4",
