@@ -18,7 +18,7 @@
     "lint:firefox": "addons-linter dist/firefox --warnings-as-errors"
   },
   "devDependencies": {
-    "@playwright/test": "1.64.0",
+    "@playwright/test": "1.64.1",
     "addons-linter": "10.14.0",
     "prosemirror-history": "1.5.1",
     "prosemirror-model": "1.25.12",
